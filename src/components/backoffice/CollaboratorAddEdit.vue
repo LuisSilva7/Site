@@ -70,7 +70,7 @@
 
  export default {
     components: { BlueButton },
-    props: ['collaboratorEdit'],
+    props: ['collaboratorEdit', 'index'],
     data() {
       return {
         collaborator: {photo: '', name: '', birthDate: '', telNumber: '', address: '', email: ''},
@@ -81,9 +81,6 @@
     methods: {
       collaboratorHandler() {
         if (localStorage.getItem('collaborators')) {
-              let collaborators = JSON.parse(localStorage.getItem('collaborators'))
-              collaborators.push(this.collaborator)
-              localStorage.setItem('collaborators', JSON.stringify(collaborators))
 
               const reader = new FileReader()
 
@@ -98,8 +95,16 @@
               }
               if(this.file) {
                 reader.readAsDataURL(this.file)
+                location.reload()
+                alert("Colaborador registado com sucesso!")
               }
-        this.collaborator = {photo: '', name: '', birthDate: '', telNumber: '', address: '', email: ''}
+              else {
+                let collaborators = JSON.parse(localStorage.getItem('collaborators'))
+                collaborators.push(this.collaborator)
+                localStorage.setItem('collaborators', JSON.stringify(collaborators))
+                this.collaborator = {photo: '', name: '', birthDate: '', telNumber: '', address: '', email: ''}
+                alert("Colaborador registado com sucesso!")
+              }
         }
       },
       collaboratorEditHandler() {
@@ -117,16 +122,22 @@
                 const base64Image = event.target.result;
 
                 let collaborators = JSON.parse(localStorage.getItem('collaborators'))
-                let index = collaborators.indexOf(this.collaboratorEdit)
-                collaborators.splice(index, 1)
+                collaborators.splice(this.index, 1)
                 this.collaboratorEdit.photo = base64Image
                 collaborators.push(this.collaboratorEdit)
                 localStorage.setItem('collaborators', JSON.stringify(collaborators))
               }
               if(this.file) {
                 reader.readAsDataURL(this.file)
+                alert("Colaborador editado com sucesso!")
               }
-        this.$router.push('/collaboratorsList')
+              else {
+                let collaborators = JSON.parse(localStorage.getItem('collaborators'))
+                collaborators.splice(this.index, 1)
+                collaborators.push(this.collaboratorEdit)
+                localStorage.setItem('collaborators', JSON.stringify(collaborators))
+                alert("Colaborador editado com sucesso!")
+              }
         }
       },
       handleFileChange(event) {

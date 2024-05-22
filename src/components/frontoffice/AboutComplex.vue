@@ -1,14 +1,14 @@
 <template>
-  <div class="container">
+  <div class="caixa">
     <div class="rectangle">
       <h5><b>SOBRE A GO HELP</b></h5>
-      <p>A GOHELP é uma entidade sem fins lucrativos dedicada a promover o esporte e a saúde na comunidade. Seu compromisso é proporcionar acesso ao desporto.</p>
+      <p>A GO HELP é uma entidade sem fins lucrativos dedicada a promover o desporto e a saúde na comunidade. O nosso compromisso é proporcionar acesso ao desporto para todos..</p>
       <h6><b>Sobre a criação da associação</b></h6>
-      <p>A empresa foi criada com o intuito de ajuda pessoas a</p>
+      <p>A nossa associação foi criada com o intuito de ajudar pessoas a melhorar a sua saúde e bem-estar através de atividades desportivas acessíveis e inclusivas.</p>
       <h6><b>As nossas atividades</b></h6>
-      <p>Temos vários tipos de atividades e queremos cada vezTemos vários tipos de atividades e queremos cada vez </p>
-      <h6><b>Compartilha com os teus amigos</b></h6>
-      <p>Ajuda-nos a fazer chegar a nossa associação</p>
+      <p>Oferecemos uma variedade de atividades desportivas e programas de saúde. Estamos sempre a expandir e a diversificar as nossas ofertas para melhor servir a comunidade.</p>
+      <h6><b>Partilha com os teus amigos</b></h6>
+      <p>Ajuda-nos a divulgar a nossa associação. Partilha a nossa missão e as nossas atividades com os teus amigos e familiares para que possamos alcançar e beneficiar ainda mais pessoas.</p>
     </div>
   </div>
 </template>
@@ -23,30 +23,32 @@ export default {
 <style scoped>
 
 
+
 .rectangle {
-  width: 80%; /* Largura do retângulo */
-  height: 80%;
-  padding: 20px;
+ 
+  width: 130%; /* Largura do retângulo */
+  position: relative;
+  padding: 10px;
   background-color: rgba(201, 164, 164, 0.1); /* Cor de fundo com transparência */
   border: 2px solid #333; /* Borda sólida de 2px */
   border-radius: 10px; /* Borda arredondada */
   text-align: left; /* Alinhamento do texto ao centro */
-  margin-left:10%
   
 }
 
 h5 {
-  margin-bottom: 10%; /* Espaçamento inferior entre o título e o texto */
+  margin-bottom: 5%; /* Espaçamento inferior entre o título e o texto */
   color: #F5A425
 }
 
 h6 {
   font-style: italic; /* Texto em itálico */
-  margin-bottom: 3%;
+  margin-bottom: 1%;
   
 }
 
 p {
+  font-size: 12.5px;
   font-style: italic; /* Texto em itálico */
 }
 </style>

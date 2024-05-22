@@ -1,20 +1,35 @@
 <template>
-  <TheHeader />
-  <div id="collaborator" class="container">
-    <div class="rectangle">
-      <h6>CANDIDATE-SE A COLABORADOR</h6>
-      <p>Vais conseguir ajudar pessoas por todo o mundo. Faz parte desta iniciativa!</p>
-      <div class="form-container">
-        <form>
-          <input v-model="proposedCollaborator.name" type="text" placeholder="Nome">
-          <input v-model="proposedCollaborator.birthDate" type="date" placeholder="Data de Nascimento">
-          <input v-model="proposedCollaborator.telNumber" type="tel" placeholder="Telefone">
-          <input v-model="proposedCollaborator.address" type="text" placeholder="Morada">
-          <input type="file" @change="handleFileChange" id="foto" name="foto" accept="image/*" required>
-        </form>
-      </div>
-      <Button @click="proposedCollaboratorHandler" content="JUNTA-TE A NÓS"/>
+  <TheHeader class="header"/>
+  <div class="container">
+    <div class="header2">
+      <div class="titulo">
+        <h5>CANDIDATE-SE A COLABORADOR!</h5>
+      </div>          
     </div>
+    <form @submit.prevent="handleSubmit">
+        <div class="txt_field">
+            <input type ="text" required v-model="proposedCollaborator.name">
+            <label>Nome:</label>
+        </div>
+        <div class="txt_field">
+            <input type ="tel" required v-model="proposedCollaborator.telNumber">
+            <label>Número de Telemóvel:</label>
+        </div>
+        <div class="txt_field">
+            <input type ="text" required v-model="proposedCollaborator.address">
+            <label>Morada:</label>
+        </div>
+        <div class="txt_field">
+            <input type ="date" required v-model="proposedCollaborator.birthDate">
+            <label>Data de Nascimento:</label>
+        </div>
+        <div class="input_foto">
+          <input type="file" @change="handleFileChange" id="foto" name="foto" accept="image/*" required>
+        </div>
+        <div class="button">
+          <Button @click="proposedCollaboratorHandler" content="JUNTA-TE A NÓS"/>
+        </div>
+    </form>
   </div>
 </template>
 
@@ -78,29 +93,128 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  display: flex;
-  justify-content: center;
+* {
+  background: url("@/assets/background-header-image.jpeg");
 }
+  
+  body{
+    margin:0;
+    padding: 0;
+    font-family: montserrat;
+    height:100vh;
+    overflow: hidden;
+  }
 
-.rectangle {
-  width: 400px; /* Largura do retângulo */
-  padding: 20px;
-  background-color: rgba(201, 164, 164, 0.1); /* Cor de fundo com transparência */
-  border: 2px solid #333; /* Borda sólida de 2px */
-  border-radius: 10px; /* Borda arredondada */
-  text-align: center; /* Alinhamento do texto ao centro */
-}
+  h5 {
+    text-align: center;
+  }
 
-h6 {
-  margin-bottom: 10px; /* Espaçamento inferior entre o título e o texto */
-}
+  .header2{
+    border-radius: 30px;
+  }
 
-p {
-  font-style: italic; /* Texto em itálico */
-}
+  .titulo{
+    padding-top: 1.5rem;
+    border-radius: 30px;
+  }
 
-.form-container {
-  margin-bottom: 20px; /* Espaçamento entre o formulário e o botão */
-}
+  .button{
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .container {
+    position:absolute;
+    margin-top: 2rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width:400px;
+    border-radius: 30px;
+    border: 2px solid #adadad;
+  }
+
+  .center form{
+    max-width: 420px;
+    margin: 40px 20px;
+    text-align: left;
+    padding: 10px;
+    border-radius: 30px;
+    box-sizing: border-box;
+  }
+
+  form .txt_field{
+  position: relative;
+  border-bottom: 2px solid #adadad;
+  margin: 30px 0;
+  }
+
+  label {
+      color: #adadad;
+      position:absolute;
+      top:50%;
+      left:5px;
+      transform: translateY(-50%);
+      font-size: 16px;
+      pointer-events: none;
+      transition: .5s;
+  }
+
+  input {
+      color: #c6c6c6;
+      padding: 0 5px;
+      width: 100%;
+      height: 40px;
+      font-size: 16px;
+      border: none;
+      background:none;
+      outline:none;
+  }
+
+  span::before{
+  content: '';
+  position: absolute;
+  top: 40px;
+  left:0;
+  width: 0%;
+  height: 2px;
+  background: #2691d9;
+  transition: .5s;
+  }
+
+  input:focus ~label,
+  input:valid~label{
+  top: -5px;
+  color: #ffffff;
+  }
+
+  input:focus ~ span::before,
+  input:valid ~ span::before{
+  width: 100%;
+  }
+
+  input[type="submit"]{
+  width: 100%;
+  height: 50px;
+  border: 1px solid;
+  background: #2691d9;
+  border-radius: 25px;
+  font-size: 18px;
+  color: #e9f4fb;
+  font-weight: 700;
+  cursor:pointer;
+  outline:none;
+  margin: -5px 0 -10px 5px;
+  }
+
+  input[type="submit"]:hover{
+  border-color: #2691d9;
+  transition: .5s;
+  }
+
+  .header{
+    background: url("@/assets/background-header-image.jpeg");
+  }
+
 </style>

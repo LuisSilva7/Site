@@ -2,7 +2,8 @@
   <div v-if="!consulted" class="card mb-3" style="max-width: 50rem; max-height:50rem">
     <div class="row g-0">
       <div class="col-md-4 d-flex">
-        <img src="@/assets/gym-class-image.png" class="img-fluid rounded-start" alt="gym class">
+        <img v-if="proposedIniciative.photo === ''" src="@/assets/default-image.png" height="80px" width="80px" alt="Foto da Iniciativa">
+        <img v-else :src="proposedIniciative.photo" height="80px" width="80px" alt="Foto da Iniciativa">
       </div>
         <div class="col-md-8 d-flex flex-column">
           <div class="card-body">

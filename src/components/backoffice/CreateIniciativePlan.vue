@@ -9,20 +9,19 @@
         <input type="text" id="duration" v-model="finalIniciative.expectedDuration">
       </div>
       <div class="form-group">
-        <label for="professionals">Colaboradores</label>
-        <BlueButton v-if="closeCollaborators === 'mais'" @click="handleCollaborators" content="+"/>
-        <BlueButton v-if="closeCollaborators === 'menos'" @click="handleCollaboratorsClose" content="-"/>
-        <ShowCollaborators v-if="showCollaborators" :collaborators="collaborators" @collaboratorsSaved="handlerCollaboratorsSaved"/>
-        <div v-if="collaborators">
-          <div v-for="(collaborator, index) in collaborators" :key="index">
-            <p>Colaborador{{ index + 1 }} - {{ collaborator.name }}</p>
-          </div>
+        <div class="ola">
+          <label for="professionals">Colaboradores</label>
+          <BlueButton v-if="closeCollaborators === 'mais'" @click="handleCollaborators" content="+"/>
+          <BlueButton v-if="closeCollaborators === 'menos'" @click="handleCollaboratorsClose" content="-"/>
         </div>
+        <ShowCollaborators v-if="showCollaborators" :collaborators="collaborators" @collaboratorsSaved="handlerCollaboratorsSaved"/>
       </div>
       <div class="form-group">
-        <label for="materials">Materiais</label>
-        <BlueButton v-if="closeMaterials === 'mais'" @click="handleMaterials" content="+"/>
-        <BlueButton v-if="closeMaterials === 'menos'" @click="handleMaterialsClose" content="-"/>
+        <div class="ola">
+          <label for="materials">Materiais</label>
+          <BlueButton v-if="closeMaterials === 'mais'" @click="handleMaterials" content="+"/>
+          <BlueButton v-if="closeMaterials === 'menos'" @click="handleMaterialsClose" content="-"/>
+        </div>
         <ShowMaterials v-if="showMaterials" :materials="materials" @materialsSaved="handlerMaterialsSaved"/>
       </div>
       <div class="form-group">
@@ -231,8 +230,45 @@ export default {
         })
         localStorage.setItem('proposedIniciatives', JSON.stringify(proposedIniciatives))
       }
-      location.reload()
+
+      var templateParams = {
+        email: this.finalIniciative.email,
+        name: this.finalIniciative.name,
+        theme: this.finalIniciative.theme,
+        local: this.finalIniciative.local,
+        targetAudience: this.finalIniciative.targetAudience,
+        minParticipants: this.finalIniciative.minParticipants,
+        maxParticipants: this.finalIniciative.maxParticipants,
+        objective: this.finalIniciative.objective,
+        date: this.finalIniciative.date,
+        eventFlow: this.finalIniciative.eventFlow,
+        expectedSuccessRate: this.finalIniciative.expectedSuccessRate,
+        expectedDuration: this.finalIniciative.expectedDuration
+      }
+
+      emailjs.send('service_lzqa2yd', 'template_7gxtipj', templateParams).then(
+        (response) => {
+          console.log('SUCCESS!', response.status, response.text);
+          location.reload()
+        },
+        (error) => {
+          console.log('FAILED...', error)
+          location.reload()
+        }
+      )
       alert("Iniciativa registada com sucesso!")
+    }
+  },
+  mounted() {
+    const script = document.createElement('script')
+    script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js'
+    script.async = true
+    document.body.appendChild(script);
+
+    script.onload = () => {
+      emailjs.init({
+        publicKey: 'acllVfUK9wSzqr0g1',
+      })
     }
   }
 }
@@ -294,5 +330,9 @@ textarea {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra suave */
   margin-right: 10px;
   cursor: pointer;
+}
+
+.ola {
+  display: flex;
 }
 </style>

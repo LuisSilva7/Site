@@ -2,10 +2,18 @@
   <TheHeader />
     <div class="page-container">
       <IniciativeForm />
-      <div>
-        <h3>AS MINHAS INICIATIVAS</h3>
-        <div v-for="proposedIniciative in proposedIniciatives" :key="proposedIniciative.name">
-          <IniciativeInfo />
+      <div class="container">
+        <div class="row row-cols 2">
+          <div class="header2">
+            <div class="titulo">   
+              <h4>As minhas Iniciativas</h4>
+            </div>          
+        </div>
+        <div class="row row-cols-2">
+          <div v-for="proposedIniciative in proposedIniciatives" :key="proposedIniciative.name" class="column">
+            <IniciativeInfo :proposedIniciative="proposedIniciative"/>
+          </div>
+        </div>
         </div>
       </div>
     </div>
@@ -42,10 +50,43 @@
   </script>
   
   <style scoped>
-  .page-container {
-    margin-right: 30%;
-    display: flex;
-    justify-content: flex-start; /* Alinha o conteúdo à esquerda */
-    padding-left: 20px; /* Adiciona um espaço à esquerda */
+
+    .header{
+      background: url("@/assets/background-header-image.jpeg");
+    }
+
+    .page-container {
+      margin-right: 25%;
+      display: flex;
+      justify-content: flex-start; /* Alinha o conteúdo à esquerda */
+      padding-left: 20px; /* Adiciona um espaço à esquerda */
+      height:900px;
+    }
+
+    .container {
+    background: url("@/assets/background-header-image.jpeg");
+    padding:0.5rem;
+    margin-left: 30%;
+    margin-top: 29%;
+    transform: translate(-50%, -50%);
+    width:850px;
+    min-width: 850px;
+    height:auto;
+    max-height: 35rem;
+    border-radius: 20px;
+    border: 2px solid #adadad;
+    overflow-y: auto; /* Adiciona barra de rolagem vertical */
+    overflow-x: hidden;
+    scrollbar-width: thin; /* Largura da barra de rolagem para navegadores que suportam o modelo de barra de rolagem padrão */
+    scrollbar-color: #888 #f1f1f1; /* Cor da barra de rolagem */
   }
+
+  .titulo {
+    text-align: center;
+  }
+
+  .column{
+    padding-left:30px;
+  }
+
   </style>

@@ -1,13 +1,14 @@
 <template>
     <p>Materiais Disponíveis:</p>
-    <div v-for="(material, index) in materials" :key="index">
-        <BlueButton @click="handleMaterial(index)" content="+"/>
+    <div v-for="(material, index) in materials" :key="index" class="ola">
         <p>Material {{ index + 1 }} - {{ material.name }}</p>
+        <BlueButton @click="handleMaterial(index)" content="+"/>
     </div>
+    <br>
     <p>Materiais Selecionados:</p>
-    <div v-for="(finalMaterial, index) in finalMaterials" :key="index">
-        <BlueButton @click="handleFinalMaterial(index)" content="-"/>
+    <div v-for="(finalMaterial, index) in finalMaterials" :key="index" class="ola">
         <p>Material {{ index + 1 }} - {{ finalMaterial.name }}</p>
+        <BlueButton @click="handleFinalMaterial(index)" content="-"/>
     </div>
     <BlueButton @click="saveMaterials" content="Confirmar materiais" />
 </template>
@@ -33,12 +34,14 @@ export default {
             this.finalMaterials.splice(index, 1)
         },
         saveMaterials() {
-            this.$emit('materialsSaved', {materialsSaved: this.finalMaterials})
+            this.$emit('materialsSaved', this.finalMaterials)
         }
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+.ola {
+    display: flex;
+}
 </style>

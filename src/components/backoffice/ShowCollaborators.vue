@@ -1,13 +1,14 @@
 <template>
     <p>Colaboradores Disponíveis:</p>
-    <div v-for="(collaborator, index) in collaborators" :key="index">
-        <BlueButton @click="handleCollaborator(index)" content="+"/>
+    <div v-for="(collaborator, index) in collaborators" :key="index" class="ola">
         <p>Colaborador {{ index + 1 }} - {{ collaborator.name }}</p>
+        <BlueButton @click="handleCollaborator(index)" content="add"/>
     </div>
+    <br>
     <p>Colaboradores Selecionados:</p>
-    <div v-for="(finalCollaborator, index) in finalCollaborators" :key="index">
-        <BlueButton @click="handleFinalCollaborator(index)" content="-"/>
+    <div v-for="(finalCollaborator, index) in finalCollaborators" :key="index" class="ola">
         <p>Colaborador {{ index + 1 }} - {{ finalCollaborator.name }}</p>
+        <BlueButton @click="handleFinalCollaborator(index)" content="rem"/>
     </div>
     <BlueButton @click="saveCollaborators" content="Confirmar colaboradores" />
 </template>
@@ -33,12 +34,16 @@ export default {
             this.finalCollaborators.splice(index, 1)
         },
         saveCollaborators() {
-            this.$emit('collaboratorsSaved', {collaboratorsSaved: this.finalCollaborators})
+            console.log("QUNADO ENVIA")
+            console.log(this.finalCollaborators)
+            this.$emit('collaboratorsSaved', this.finalCollaborators)
         }
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+.ola {
+    display: flex;
+}
 </style>

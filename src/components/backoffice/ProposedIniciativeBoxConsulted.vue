@@ -2,7 +2,8 @@
   <div class="card mb-3" style="max-width: 50rem; max-height:50rem">
     <div class="row g-0">
       <div class="col-md-4 d-flex">
-        <img src="@/assets/gym-class-image.png" class="img-fluid rounded-start" alt="gym class">
+        <img v-if="proposedIniciative.photo === ''" src="@/assets/default-image.png" height="80px" width="80px" alt="Foto da Iniciativa">
+        <img v-else :src="proposedIniciative.photo" height="80px" width="80px" alt="Foto da Iniciativa">
       </div>
         <div class="col-md-8 d-flex flex-column">
           <div class="card-body">
@@ -58,7 +59,26 @@ import CreateIniciativePlan from './CreateIniciativePlan.vue'
                 proposedIniciatives.push(this.proposedIniciative)
                 localStorage.setItem('proposedIniciatives', JSON.stringify(proposedIniciatives))
 
-                location.reload()
+                var templateParams = {
+                email: this.proposedIniciative.email,
+                name: this.proposedIniciative.name,
+                theme: this.proposedIniciative.theme,
+                local: this.proposedIniciative.local,
+                targetAudience: this.proposedIniciative.targetAudience,
+                objective: this.proposedIniciative.objective,
+                date: this.proposedIniciative.date,
+              }
+
+              emailjs.send('service_lzqa2yd', 'template_61dy7j5', templateParams).then(
+                (response) => {
+                  console.log('SUCCESS!', response.status, response.text);
+                  location.reload()
+                },
+                (error) => {
+                  console.log('FAILED...', error)
+                  location.reload()
+                }
+              )
             }
         },
         createIniciativePlan() {
@@ -66,6 +86,18 @@ import CreateIniciativePlan from './CreateIniciativePlan.vue'
             let iniciative = this.proposedIniciative
             this.$emit('createPlan', iniciative)
         }
+    },
+    mounted() {
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js'
+      script.async = true
+      document.body.appendChild(script);
+
+      script.onload = () => {
+        emailjs.init({
+          publicKey: 'acllVfUK9wSzqr0g1',
+        })
+      }
     }
   }
   </script>

@@ -1,4 +1,6 @@
 <template>
+  <div class="header">
+    <h2>Lista de Colaboradores</h2>
     <div class="collaborator-table-container">
       <table class="collaborator-table">
         <thead>
@@ -15,7 +17,10 @@
         </thead>
         <tbody>
           <tr v-for="(collaborator, index) in collaboratorList" :key="index">
-            <td><img src="@/assets/gym-class-image.png" height="80px" width="80px" alt="Foto do Colaborador"></td>
+            <td>
+              <img v-if="collaborator.photo === ''" src="@/assets/default-image.png" height="80px" width="80px" alt="Foto do Colaborador">
+              <img v-else :src="collaborator.photo" height="80px" width="80px" alt="Foto do Colaborador">
+            </td>
             <td>{{ collaborator.name }}</td>
             <td>{{ collaborator.birthDate }}</td>
             <td>{{ collaborator.email }}</td>
@@ -33,6 +38,7 @@
         </tbody>
       </table>
     </div>
+  </div>
   </template>
   
   <script>
@@ -53,9 +59,18 @@
   
   <style scoped>
   .collaborator-table-container {
-    display: flex;
-    justify-content: center;
+    overflow-y: auto; /* Adiciona scroll apenas na vertical */
+      display: flex;
+      justify-content: center;
+       width: 100%;
   }
+
+      h2{
+      font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif ;
+      display: flex;
+      margin-left: 10%;
+      margin-top: -3%;
+    }
   
   .collaborator-table {
     width: 80%;
@@ -92,9 +107,11 @@
   }
   
   img {
-    max-width: 80px;
-    max-height: 80px;
-    border-radius: 5px;
+      max-width: 80px;
+      max-height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid #0b1027;
   }
 
   svg {

@@ -35,7 +35,7 @@
             location.reload()
         })
         .catch((error) => {
-            console.log("erro")
+            console.log(error)
         })
     }
 
@@ -123,8 +123,8 @@ h3:hover {
   }
   
   .left-content img {
-    width: 110px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
   }
   
   .right-content img { 

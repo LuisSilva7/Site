@@ -1,93 +1,109 @@
 <template>
-    <div>
-      <TheNavBar />
-      <br>
-      <br>
-      <br>
-      <h2>PEDIDOS DE COLABORADORES</h2>
-      <div class="page-container">
-        <div class="collaborators-container">
-          <div v-if="proposedCollaborators" class="collaborators-row">
-            <div v-for="proposedCollaborator in proposedCollaborators" :key="proposedCollaborator.email">
-              <CollaboratorBox :proposedCollaborator="proposedCollaborator"/>
-            </div>
+  <div>
+    <TheNavBar />
+    <br>
+    <br>
+    <br>
+    <h2>Pedido de Colaboradores</h2>
+    <div class="page-container">
+      <div class="collaborators-container">
+        <div v-if="proposedCollaborators" class="collaborators-row">
+          <div v-for="proposedCollaborator in proposedCollaborators" :key="proposedCollaborator.email">
+            <CollaboratorBox :proposedCollaborator="proposedCollaborator"/>
           </div>
-          <h4 v-else>Não existem pedidos de colaboradores!</h4>
         </div>
+        <h4 v-else>Não existem pedidos de colaboradores!</h4>
       </div>
     </div>
-  </template>
-  
-  <script>
-  import TheNavBar from '@/components/backoffice/TheNavBar.vue'
-  import CollaboratorBox from '@/components/backoffice/CollaboratorBox.vue'
-  
-  export default {
-    components: { TheNavBar, CollaboratorBox },
-    data() {
-      return {
-        proposedCollaborators: [],
-        status: true
-      }
-    },
-    created() {
-      if (localStorage.getItem('proposedCollaborators')) {
-        this.proposedCollaborators = JSON.parse(localStorage.getItem('proposedCollaborators'))
-      }
+  </div>
+</template>
+
+<script>
+import TheNavBar from '@/components/backoffice/TheNavBar.vue'
+import CollaboratorBox from '@/components/backoffice/CollaboratorBox.vue'
+
+export default {
+  components: { TheNavBar, CollaboratorBox },
+  data() {
+    return {
+      proposedCollaborators: [],
+      status: true
+    }
+  },
+  created() {
+    if (localStorage.getItem('proposedCollaborators')) {
+      this.proposedCollaborators = JSON.parse(localStorage.getItem('proposedCollaborators'))
     }
   }
-  </script>
-  
-  <style scoped>
-  .page-container {
+}
+</script>
+
+<style scoped>
+
+  h2{
+    margin-left: 10%;
+    
+  }
+
+  .collaborators-row{
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 80vh; /* Altura total da tela */
+    margin-right: 4%;
   }
+
+.page-container {
+  display: flex;
+  align-content: center;
+  margin-top: -1%;
+  justify-content: center;
+  align-items: center;
+  height: 80vh; /* Altura total da tela */
+}
+
+.collaborators-container {
   
-  .collaborators-container {
-    background: url("@/assets/background-header-image.jpeg");
-    width: 80%; /* Largura do container */
-    max-height: 70vh; /* Altura máxima do container */
-    overflow-y: auto; /* Adiciona barra de rolagem vertical */
-    scrollbar-width: thin; /* Largura da barra de rolagem para navegadores que suportam o modelo de barra de rolagem padrão */
-    scrollbar-color: #888 #f1f1f1; /* Cor da barra de rolagem */
-  }
-  
-  .collaborators-container::-webkit-scrollbar {
-    width: 12px; /* Largura da barra de rolagem */
-  }
-  
-  .collaborators-container::-webkit-scrollbar-thumb {
-    background-color: #888; /* Cor do botão da barra de rolagem */
-    border-radius: 6px; /* Raio da borda do botão da barra de rolagem */
-  }
-  
-  .collaborators-container::-webkit-scrollbar-thumb:hover {
-    background-color: #555; /* Cor do botão da barra de rolagem ao passar o mouse */
-  }
-  
-  .collaborators-container::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Cor do trilho da barra de rolagem */
-    border-radius: 6px; /* Raio da borda do trilho da barra de rolagem */
-  }
-  
-  .collaborators-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  
+  margin-top: -10%;
+  background: url("@/assets/background-header-image.jpeg");
+  width: 80%; /* Largura do container */
+  max-height: 50vh; /* Altura máxima do container */
+  overflow-y: auto; /* Adiciona barra de rolagem vertical */
+  scrollbar-width: thin; /* Largura da barra de rolagem para navegadores que suportam o modelo de barra de rolagem padrão */
+  scrollbar-color: #888 #f1f1f1; /* Cor da barra de rolagem */
+}
+
+.collaborators-container::-webkit-scrollbar {
+  width: 12px; /* Largura da barra de rolagem */
+}
+
+.collaborators-container::-webkit-scrollbar-thumb {
+  background-color: #888; /* Cor do botão da barra de rolagem */
+  border-radius: 6px; /* Raio da borda do botão da barra de rolagem */
+}
+
+.collaborators-container::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Cor do botão da barra de rolagem ao passar o mouse */
+}
+
+.collaborators-container::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Cor do trilho da barra de rolagem */
+  border-radius: 6px; /* Raio da borda do trilho da barra de rolagem */
+}
+
+.collaborators-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.collaborators-row > div {
+  width: calc(50% - 5px); /* Define a largura de cada iniciativa (50% da largura do container, menos margem) */
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
   .collaborators-row > div {
-    width: calc(50% - 5px); /* Define a largura de cada iniciativa (50% da largura do container, menos margem) */
-    margin-bottom: 10px;
+    width: calc(100% - 5px); /* Em telas menores, cada iniciativa ocupa 100% da largura do container */
   }
-  
-  @media (max-width: 768px) {
-    .collaborators-row > div {
-      width: calc(100% - 5px); /* Em telas menores, cada iniciativa ocupa 100% da largura do container */
-    }
-  }
-  </style>
+}
+</style>

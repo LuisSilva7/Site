@@ -1,6 +1,6 @@
 <template>
     <TheNavBar />
-    <CollaboratorAddEdit collaboratorEdit=""/>
+    <CollaboratorAddEdit collaboratorEdit="" index=""/>
 </template>
 
 <script>
