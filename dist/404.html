@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="refresh" content="0; url=./">
+    <script type="text/javascript">
+      // Redireciona para a mesma URL para permitir que o Vue Router lide com a rota
+      window.location.replace('/' + window.location.pathname.substring(1));
+    </script>
   </head>
   <body>
   </body>
