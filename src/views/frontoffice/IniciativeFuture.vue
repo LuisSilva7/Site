@@ -7,7 +7,7 @@
           {{ iniciative.theme }}
         </div>
         <div class="objetivo">
-          {{ iniciative.objective }}
+          <span>Objetivo: {{ iniciative.objective }}</span>
         </div>
       </div>
       <div class="foto-container">
@@ -24,8 +24,8 @@
         <p><strong>Máximo de Participantes: </strong> {{ iniciative.minParticipants }}</p>
         <p><strong>Mínimo de Participantes: </strong> {{ iniciative.maxParticipants }}</p>
         <p><strong>Fluxo de Eventos: </strong> {{ iniciative.eventFlow }}</p>
-        <p><strong>Duração Esperada: </strong> {{ iniciative.expectedDuration }}</p>
-        <p><strong>Percentagem de Sucesso Esperada: </strong> {{ iniciative.expectedSuccessRate }}</p>
+        <p><strong>Duração Esperada: </strong> {{ iniciative.expectedDuration }} minutos</p>
+        <p><strong>Percentagem de Sucesso Esperada: </strong> {{ iniciative.expectedSuccessRate }} %</p>
         <p><strong>Profisionais Associados</strong></p>
         <div v-for="(professional, index) in iniciative.professionals" :key="index">
           <p>Profisional {{ index + 1}}: {{ professional.name }}</p>

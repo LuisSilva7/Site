@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     editHandler(index) {
-      this.$router.push({ name: 'materialEdit', params: { index: index }})
+      this.$router.push({ name: 'MaterialEdit', params: { index: index }})
     },
     removeHandler(index) {
       this.materialList.splice(index, 1)

@@ -7,7 +7,7 @@
             {{ iniciative.theme }}
           </div>
           <div class="objetivo">
-            {{ iniciative.objective }}
+            <span>Objetivo: {{ iniciative.objective }}</span>
           </div>
         </div>
         <div class="foto-container">
@@ -24,8 +24,8 @@
           <p><strong>Máximo de Participantes: </strong> {{ iniciative.minParticipants }}</p>
           <p><strong>Mínimo de Participantes: </strong> {{ iniciative.maxParticipants }}</p>
           <p><strong>Fluxo de Eventos: </strong> {{ iniciative.eventFlow }}</p>
-          <p><strong>Duração Esperada: </strong> {{ iniciative.expectedDuration }}</p>
-          <p><strong>Percentagem de Sucesso Esperada: </strong> {{ iniciative.expectedSuccessRate }}</p>
+          <p><strong>Duração Esperada: </strong> {{ iniciative.expectedDuration }} minutos</p>
+          <p><strong>Percentagem de Sucesso: </strong> {{ iniciative.successRate }} %</p>
           <p><strong>Profisionais Associados</strong></p>
           <div v-for="(professional, index) in iniciative.professionals" :key="index">
             <p>Profisional {{ index + 1}}: {{ professional.name }}</p>
@@ -46,6 +46,14 @@
           <p><strong>Email: </strong> {{ iniciative.email }}</p>
           <p><strong>Data de Nascimento: </strong> {{ iniciative.birthDate }}</p>
           <p><strong>Número de Telefone: </strong> {{ iniciative.telNumber }}</p>
+          <p><strong>Dê um Feedback à nossa iniciativa!</strong></p>
+          <div class="flexx">
+            <ButtonIniciatives @click="feedback(20)" content="20%" class="button" />
+          <ButtonIniciatives @click="feedback(40)" content="40%" class="button" />
+          <ButtonIniciatives @click="feedback(60)" content="60%" class="button" />
+          <ButtonIniciatives @click="feedback(80)" content="80%" class="button" />
+          <ButtonIniciatives @click="feedback(100)" content="100%" class="button" />
+          </div>
         </div>
       </div>
     </div>
@@ -55,10 +63,11 @@
   <script>
   import TheHeader from '../../components/frontoffice/TheHeader.vue'
   import Button from '../../components/frontoffice/Button.vue'
+  import ButtonIniciatives from '../../components/frontoffice/ButtonIniciatives.vue'
   import { getStorage, ref as storageRef, getDownloadURL  } from 'firebase/storage'
   
   export default {
-  components: { TheHeader, Button },
+  components: { TheHeader, Button, ButtonIniciatives },
   data() {
     return {
       iniciative: {},
@@ -68,6 +77,14 @@
   methods: {
     goBack() {
       this.$router.go(-1)
+    },
+    feedback(value) {
+      this.iniciative.feedback.push(value)
+      var iniciatives = JSON.parse(localStorage.getItem('iniciatives'))
+      const index = iniciatives.findIndex(iniciative => iniciative.theme === this.iniciative.theme)
+      iniciatives.splice(index, 1)
+      iniciatives.push(this.iniciative)
+      localStorage.setItem('iniciatives', JSON.stringify(iniciatives))
     }
   },
   created() {
@@ -201,6 +218,9 @@
   .infoIniciativa, .infoPessoais {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   
+  }
+  .flexx{
+    display: flex;
   }
   
   h3 {

@@ -7,7 +7,7 @@
           {{ iniciative.theme }}
         </div>
         <div class="objetivo">
-          {{ iniciative.objective }}
+          <span>Objetivo: {{ iniciative.objective }}</span>
         </div>
       </div>
       <div class="foto-container">

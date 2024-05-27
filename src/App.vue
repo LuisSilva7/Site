@@ -1045,7 +1045,7 @@ export default {
             name: "Ana Silva",
             birthDate: "1985-10-15",
             telNumber: "919876543",
-            theme: "Sessão Motivacional: Superação",
+            theme: "Sessão Superação",
             local: "Lisboa",
             targetAudience: "Todos",
             minParticipants: 15,

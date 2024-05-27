@@ -359,12 +359,11 @@ export default {
 <style scoped>
 
 .container {
-  margin-top: 20px;
-  margin-bottom: 20vh;
+  background-image: url('@/assets/background-header-image.jpeg');
+  margin-top: 50px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
-  background-color: rgb(255, 255, 255, 0.1);
 }
 
 .title{

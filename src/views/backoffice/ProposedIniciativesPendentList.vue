@@ -5,21 +5,23 @@
     <br />
     <br />
     <div class="titulo">
-    <h2>Iniciativas Propostas</h2>
+      <h2>Iniciativas Propostas</h2>
     </div>
     <div class="page-container">
       <div class="iniciativas-container">
-        <div v-if="proposedIniciatives" class="iniciativas-row">
+        <div v-if="proposedIniciatives.length" class="iniciativas-row">
           <div v-for="proposedIniciative in proposedIniciatives" :key="proposedIniciative.theme">
-            <IniciativeBox :proposedIniciative="proposedIniciative" :status="status"
+            <IniciativeBox 
+              :proposedIniciative="proposedIniciative" 
+              :status="status"
               @createIniciativePlan="createIniciativePlan" />
           </div>
         </div>
         <h4 v-else>Não existem iniciativas propostas!</h4>
       </div>
-    </div>
-    <div v-if="plan">
-      <CreateIniciativePlan :iniciative="iniciative" @closeHandler="handleClosePlan" />
+      <div v-if="plan" class="pos">
+        <CreateIniciativePlan :iniciative="iniciative" @closeHandler="handleClosePlan" />
+      </div>
     </div>
   </div>
 </template>
@@ -61,11 +63,15 @@ export default {
 </script>
 
 <style scoped>
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: auto;
+}
+
 .page-container {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  height: 80vh;
   margin-top: 13.5%;
   margin-left: 0.5%;
 }
@@ -105,21 +111,37 @@ export default {
   margin-bottom: 10px;
 }
 
-.iniciativas-row>div {
+.iniciativas-row > div {
   width: calc(50% - 5px);
   margin-bottom: 10px;
 }
 
 @media (max-width: 768px) {
-  .iniciativas-row>div {
+  .iniciativas-row > div {
     width: calc(100% - 5px);
   }
 }
-.titulo{
+
+.titulo {
   margin-top: 3%;
   margin-bottom: -13%;
   margin-left: 11%;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
+.pos {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 80%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  max-height: 80%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
 </style>
