@@ -1,4 +1,3 @@
-
 <template>
     <div class="card mb-3" style="max-width: 150rem; max-height:26rem">
       <div class="classe" style="max-width: 150rem; max-height:26rem">
@@ -22,9 +21,14 @@
                 <p class="card-text">Público alvo: {{ iniciative.targetAudience }}</p>
                 <p class="card-text">Mínimo Participantes: {{ iniciative.minParticipants }}</p>
                 <p class="card-text">Máximo Participantes: {{ iniciative.maxParticipants }}</p>
+                <p class="card-text">Participantes Presentes: {{ iniciative.participants }}</p>
                 <p class="card-text">Duração Esperada: {{ iniciative.expectedDuration }} minutos</p>
+                <p class="card-text">Duração: {{ iniciative.duration }} minutos</p>
                 <p class="card-text">Nível de Sucesso Esperado: {{ iniciative.expectedSuccessRate }} %</p>
+                <p class="card-text">Nível de Sucesso: {{ iniciative.successRate }} %</p>
                 <p class="card-text">Fluxo de Eventos: {{ iniciative.eventFlow }}</p>
+                <p class="card-text">Montante Doado: {{ iniciative.donatives }} €</p>
+                <p class="card-text">Custos: {{ iniciative.costs }} €</p>
                 <p class="card-text">Colaboradores Associados</p>
                 <div v-for="(collaborator, index) in iniciative.collaborators" :key="index">
                   <p class="card-text">Colaborador {{ index + 1 }}: {{ collaborator.name }}</p>
@@ -113,9 +117,9 @@
     background-color: #1B2631;
     padding-bottom: 0px;
     overflow-y: scroll;
-    overflow-x: hidden;
-    scrollbar-width: thin;
-    scrollbar-color: #79758d #1B2631;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #79758d #1B2631;
   }
   
   .card.mb-3 {
@@ -151,7 +155,7 @@
   
   .card-title,
   .card-text {
-    margin-bottom: 10px; /* Adjust the margin bottom for each element */
+    margin-bottom: 10px;
   }
   
   .btn {

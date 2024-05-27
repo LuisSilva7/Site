@@ -4,7 +4,9 @@
     <br>
     <br>
     <br>
-    <h2>Pedido de Colaboradores</h2>
+    <div class="titulo">
+    <h2>Pedido De Colaboradores</h2>
+    </div>
     <div class="page-container">
       <div class="collaborators-container">
         <div v-if="proposedCollaborators" class="collaborators-row">
@@ -40,35 +42,30 @@ export default {
 
 <style scoped>
 
-  h2{
-    margin-left: 10%;
-    
-  }
+.titulo{
+  margin-top: 3%;
+  margin-left: 11%;
+  margin-bottom: -2.5%;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
 
-  .collaborators-row{
-    display: flex;
-    justify-content: center;
-    margin-right: 4%;
-  }
 
 .page-container {
   display: flex;
-  align-content: center;
-  margin-top: -1%;
   justify-content: center;
   align-items: center;
   height: 80vh; /* Altura total da tela */
 }
 
+
 .collaborators-container {
-  
-  margin-top: -10%;
   background: url("@/assets/background-header-image.jpeg");
-  width: 80%; /* Largura do container */
-  max-height: 50vh; /* Altura máxima do container */
-  overflow-y: auto; /* Adiciona barra de rolagem vertical */
-  scrollbar-width: thin; /* Largura da barra de rolagem para navegadores que suportam o modelo de barra de rolagem padrão */
-  scrollbar-color: #888 #f1f1f1; /* Cor da barra de rolagem */
+  width: 80%;
+  max-height: 70vh; 
+  overflow-y: auto;
+  scrollbar-width: thin; 
+  scrollbar-color: #888 #f1f1f1; 
+  margin-left: 1%;
 }
 
 .collaborators-container::-webkit-scrollbar {

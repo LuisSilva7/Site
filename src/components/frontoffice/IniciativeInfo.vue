@@ -1,34 +1,69 @@
 <template>
   <div class="quadrado2">
     <div class="conteudo-imagem">
-      <img v-if="proposedIniciative.photo === ''" src="@/assets/default-image.png" height="80px" width="80px" alt="Foto da Iniciativa">
-      <img v-else :src="proposedIniciative.photo" height="80px" width="80px" alt="Foto da Iniciativa">
+      <div class="row row-cols-2">
+        <div class="col" id="left-side">
+          <img v-if="finalIniciative.photo === ''" src="@/assets/default-image.png" height="100px" width="175px" alt="Foto da Iniciativa">
+          <img v-else :src="imageUrl" height="100px" width="175px" alt="Foto da Iniciativa">
+        </div>
+        <div class="col">
+          <div class="date">
+            <h3 id="month">{{ month }}</h3>
+            <h4 id="day">{{ day }}</h4>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="informacoes">
-      <div class="date">
-        <h4 id="month">{{ month }}</h4>
-        <h5 id="day">{{ day }}</h5>
-      </div>
       <div class="texto">
-        <h5 id="titulo">{{ proposedIniciative.theme }}</h5>
-        <p id="local">Local: {{ proposedIniciative.local }}</p>
+        <h6 id="titulo">{{ finalIniciative.theme }}</h6>
+        <p id="local">Local: {{ finalIniciative.local }}</p>
+        <p id="state">Estado: {{ finalIniciative.status}}</p>
       </div>
-      <button class="botao">Consultar</button>
+      <button class="botao" @click="consultar">Consultar</button>
     </div>
   </div>
 </template>
 
 <script>
+import { getStorage, ref as storageRef, getDownloadURL  } from 'firebase/storage'
+
 export default {
-  props: ['proposedIniciative'],
+  props: ['proposedIniciativeTheme', 'iniciativeTheme'],
   data() {
     return {
+      finalIniciative: {},
+      imageUrl: '',
       day: '',
       month: ''
     }
   },
+  methods: {
+    consultar() {
+      if(this.proposedIniciativeTheme) {
+        this.$router.push({ name: 'IniciativePendent', params: { theme: this.finalIniciative.theme } })
+      }
+      else {
+        if(this.finalIniciative.status === 'aceite') {
+          this.$router.push({ name: 'IniciativeFuture', params: { theme: this.finalIniciative.theme } })
+        }
+        else {
+          this.$router.push({ name: 'IniciativePast', params: { theme: this.finalIniciative.theme } })
+        }
+      }
+    }
+  },
 created() {
-  var partes = this.proposedIniciative.date.split("-")
+  var partes = ''
+  if(this.proposedIniciativeTheme) {
+    this.finalIniciative = JSON.parse(localStorage.getItem('proposedIniciatives')).find(iniciative => iniciative.theme === this.proposedIniciativeTheme)
+    partes = this.finalIniciative.date.split("-")
+  }
+  else {
+    this.finalIniciative = JSON.parse(localStorage.getItem('iniciatives')).find(iniciative => iniciative.theme === this.iniciativeTheme)
+    partes = this.finalIniciative.date.split("-")
+  }
+
   if(partes[1] === '01') {
     this.month = 'Jan'
   }
@@ -65,7 +100,33 @@ created() {
   if(partes[1] === '12') {
     this.month = 'Dez'
   }
-  this.day = partes[2];
+  this.day = partes[2]
+
+  const storage = getStorage()
+
+          if (this.finalIniciative.photo) {
+            const imageRef = storageRef(storage, 'images/' + this.finalIniciative.photo)
+            getDownloadURL(imageRef)
+            .then((url) => {
+              console.log('URL da imagem obtida:', url);
+              this.imageUrl = url // Retorna a URL da imagem
+            })
+            .catch((error) => {
+              console.error('Erro ao obter URL da imagem:', error)
+              throw error; // Lança o erro para ser tratado pelo chamador
+            })
+          } else {
+            const imageRef = storageRef(storage, 'images/' + 'defaultImage.png')
+            getDownloadURL(imageRef)
+            .then((url) => {
+              console.log('URL da imagem obtida:', url);
+              this.imageUrl = url // Retorna a URL da imagem
+            })
+            .catch((error) => {
+              console.error('Erro ao obter URL da imagem:', error)
+              throw error; // Lança o erro para ser tratado pelo chamador
+            })
+          }
 }
 }
 </script>
@@ -74,11 +135,11 @@ created() {
 
 .quadrado2 {
 margin-top: 30px;
-margin-left:10px;
+margin-left:40px;
 position: relative;
-width: 350px; /* Largura do quadrado */
-height: 300px; /* Altura do quadrado */
-background-color: #f0f0f0; /* Cor de fundo do quadrado */
+width: 300px; /* Largura do quadrado */
+height: 200px; /* Altura do quadrado */
+background-color:#ffffff;
 border-radius: 30px; /* Borda arredondada */
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
 overflow: hidden; /* Para esconder partes da imagem que saem do quadrado */
@@ -109,18 +170,29 @@ left: 0;
 width: 100%;
 height: 50%;
 text-align: center;
-padding-top:20px;
-padding-left:20px;
+padding-top:10px;
+padding-left:10px;
 display: flex;
 flex-flow: row nowrap;
 justify-content:left;
 }
 
+p{
+  font-size:smaller;
+  color: black;
+}
+
 .date {
-padding: 0 10px 10px 10px; /* Aqui dá para mexer para centrar no container*/ 
+margin-left: 7vh;
+margin-top:3vh;
 height: 100%;
 display: flex;
 flex-flow: column nowrap;
+text-align: left;
+}
+
+#day{
+  padding-left: 10px;
 }
 
 #month {

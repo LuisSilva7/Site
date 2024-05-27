@@ -1,17 +1,20 @@
 <template>
   <TheHeader />
     <div class="page-container">
-      <IniciativeForm />
+      <IniciativeForm class="ya" />
       <div class="container">
         <div class="row row-cols 2">
           <div class="header2">
             <div class="titulo">   
-              <h4>As minhas Iniciativas</h4>
+              <h4>As minhas Iniciativas:</h4>
             </div>          
         </div>
         <div class="row row-cols-2">
           <div v-for="proposedIniciative in proposedIniciatives" :key="proposedIniciative.name" class="column">
-            <IniciativeInfo :proposedIniciative="proposedIniciative"/>
+            <IniciativeInfo :proposedIniciativeTheme="proposedIniciative.theme" iniciativeTheme=""/>
+          </div>
+          <div v-for="iniciative in iniciatives" :key="iniciative.name" class="column">
+            <IniciativeInfo proposedIniciativeTheme="" :iniciativeTheme="iniciative.theme"/>
           </div>
         </div>
         </div>
@@ -21,7 +24,7 @@
   
   <script>
   import TheHeader from '../../components/frontoffice/TheHeader.vue'
-  import IniciativeForm from '../../components/frontoffice/IniciativeForm.vue';
+  import IniciativeForm from '../../components/frontoffice/IniciativeForm.vue'
   import IniciativeInfo from '../../components/frontoffice/IniciativeInfo.vue'
   import { getAuth, onAuthStateChanged } from "firebase/auth"
   
@@ -30,6 +33,7 @@
       data() {
         return {
           proposedIniciatives: [],
+          iniciatives: [],
           userEmail: ''
         }
       },
@@ -42,6 +46,11 @@
 
               this.proposedIniciatives = JSON.parse(localStorage.getItem('proposedIniciatives'))
               .filter(proposedIniciative => proposedIniciative.email.includes(this.userEmail))
+              this.proposedIniciatives.sort((a, b) => new Date(a.date) - new Date(b.date))
+
+              this.iniciatives = JSON.parse(localStorage.getItem('iniciatives'))
+              .filter(iniciative => iniciative.email.includes(this.userEmail))
+              this.iniciatives.sort((a, b) => new Date(a.date) - new Date(b.date))
             }
           })
         }
@@ -60,18 +69,21 @@
       display: flex;
       justify-content: flex-start; /* Alinha o conteúdo à esquerda */
       padding-left: 20px; /* Adiciona um espaço à esquerda */
-      height:900px;
+      height:1000px;
+      max-height: 700px;
+      
     }
+    
 
     .container {
     background: url("@/assets/background-header-image.jpeg");
     padding:0.5rem;
     margin-left: 30%;
-    margin-top: 29%;
+    margin-top: 33%;
     transform: translate(-50%, -50%);
     width:850px;
     min-width: 850px;
-    height:auto;
+    height:700px;
     max-height: 35rem;
     border-radius: 20px;
     border: 2px solid #adadad;
@@ -89,4 +101,7 @@
     padding-left:30px;
   }
 
+  .ya {
+    margin-top: 33%;
+  }
   </style>

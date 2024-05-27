@@ -32,19 +32,19 @@ const routes = [
     component: Iniciatives
   },
   {
-    path: '/iniciativePendent/:id',
+    path: '/iniciativePendent/:theme',
     name: 'IniciativePendent',
     component: IniciativePendent,
     props: true
   },
   {
-    path: '/iniciativePast/:id',
+    path: '/iniciativePast/:theme',
     name: 'IniciativePast',
     component: IniciativePast,
     props: true
   },
   {
-    path: '/iniciativeFuture/:id',
+    path: '/iniciativeFuture/:theme',
     name: 'IniciativeFuture',
     component: IniciativeFuture,
     props: true

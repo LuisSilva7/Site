@@ -1,48 +1,77 @@
 <template>
-  <h1>wqd</h1>
-  <button @click="enviar">enviar email</button>
+  <TheHeader class="la" />
+  <h2>TODAS AS INICIATIVAS</h2>
+  <div class="botoes">
+    <ButtonIniciatives content="TODAS" @returnStatus="showIniciatives"/>
+    <ButtonIniciatives content="PASSADAS" @returnStatus="showIniciatives"/>
+    <ButtonIniciatives content="FUTURAS" @returnStatus="showIniciatives"/>
+  </div>
+  <div class="iniciatives">
+    <div v-for="iniciative in iniciatives" :key="iniciative.theme">
+      <CurrFutIniciative :theme="iniciative.theme"/>
+    </div>
+  </div>
 </template>
 
 <script>
+import TheHeader from '../../components/frontoffice/TheHeader.vue'
+import ButtonIniciatives from '../../components/frontoffice/ButtonIniciatives.vue'
+import CurrFutIniciative from '../../components/frontoffice/CurrFutIniciative.vue'
+
 export default {
-  methods: {
-    enviar() {
-      var templateParams = {
-                email: 'lmpsilva7@gmail.com',
-                name: 'luis',
-                theme: 'aula',
-                local: 'braga',
-                targetAudience: 'adultos',
-                objective: 'objetivo',
-                date: 'data',
-              }
-
-              emailjs.send('service_lzqa2yd', 'template_61dy7j5', templateParams).then(
-                (response) => {
-                  console.log('SUCCESS!', response.status, response.text);
-                },
-                (error) => {
-                  console.log('FAILED...', error)
-                }
-              )
-
+  components: { TheHeader, ButtonIniciatives, CurrFutIniciative },
+  data() {
+    return {
+      iniciatives: []
     }
   },
-  mounted() {
-    const script = document.createElement('script')
-    script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js'
-    script.async = true
-    document.body.appendChild(script);
-
-    script.onload = () => {
-      emailjs.init({
-        publicKey: 'acllVfUK9wSzqr0g1',
-      })
+  methods: {
+    showIniciatives(content) {
+      if(content === 'TODAS') {
+        this.iniciatives = JSON.parse(localStorage.getItem('iniciatives'))
+      }
+      else if(content === 'PASSADAS') {
+        this.iniciatives = JSON.parse(localStorage.getItem('iniciatives'))
+        this.iniciatives = this.iniciatives.filter(iniciative => iniciative.status === 'passada')
+      }
+      else {
+        this.iniciatives = JSON.parse(localStorage.getItem('iniciatives'))
+        this.iniciatives = this.iniciatives.filter(iniciative => iniciative.status === 'aceite')
+      }
     }
+  },
+  created() {
+    this.iniciatives = JSON.parse(localStorage.getItem('iniciatives'))
   }
 }
 </script>
 
-<style>
+<style scoped>
+.la {
+  background: url("@/assets/background-header-image.jpeg");
+}
+
+h2 {
+  margin-top: 110px;
+  text-align: center;
+}
+
+.la2 {
+  margin-top: 850px;
+}
+
+.botoes {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 6px;
+}
+
+.iniciatives {
+  max-width: 95%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* 4 quadrados por linha */
+  gap: 115px; /* Espaçamento entre os quadrados */
+}
 
 </style>

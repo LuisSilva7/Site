@@ -56,72 +56,61 @@
 
 <script>
 import BlueButton from './BlueButton.vue'
+import { getStorage, ref as storageRef, uploadBytes  } from 'firebase/storage'
 
 export default {
   components: { BlueButton },
   props: ['materialEdit', 'index'],
   data() {
     return {
-      material: {photo: '', name: '', quantity: '', description: ''},
-      file: null,
-      imageData: ''
+      material: {photo: '', name: '', quantity: '', description: '', check: false},
+      file: null
     }
   },
   methods: {
     materialHandler() {
       if (localStorage.getItem('materials')) {
-
-            const reader = new FileReader()
-
-            reader.onload = (event) => {
-
-              const base64Image = event.target.result;
+            if(this.file) {
+              const storage = getStorage()
+              const imageRef = storageRef(storage, 'images/' + this.file.name)
+              uploadBytes(imageRef, this.file).then((snapshot) => {
+                console.log('Imagem enviada com sucesso para o Firebase!')
+                this.material = {photo: '', name: '', quantity: '', description: '', check: false}
+              }).catch((error) => {
+                console.error('Erro ao enviar imagem:', error)
+              })
+            }
 
               let materials = JSON.parse(localStorage.getItem('materials'))
-              this.material.photo = base64Image
+              if(this.file) {
+                  this.material.photo = this.file.name
+              }
               materials.push(this.material)
               localStorage.setItem('materials', JSON.stringify(materials))
-            }
-            if(this.file) {
-              reader.readAsDataURL(this.file)
-              location.reload()
               alert("Material registado com sucesso!")
-            }
-            else {
-              let materials = JSON.parse(localStorage.getItem('materials'))
-            materials.push(this.material)
-            localStorage.setItem('materials', JSON.stringify(materials))
-            this.material = {photo: '', name: '', quantity: '', description: ''}
-            alert("Material registado com sucesso!")
-            }
+              this.material = {photo: '', name: '', quantity: '', description: '', check: false}
       }
     },
     materialEditHandler() {
       if (localStorage.getItem('materials')) {
-        
-            const reader = new FileReader()
-
-            reader.onload = (event) => {
-
-              const base64Image = event.target.result;
+            if(this.file) {
+              const storage = getStorage()
+              const imageRef = storageRef(storage, 'images/' + this.file.name)
+              uploadBytes(imageRef, this.file).then((snapshot) => {
+                console.log('Imagem enviada com sucesso para o Firebase!')
+              }).catch((error) => {
+                console.error('Erro ao enviar imagem:', error)
+              })
+            }
 
               let materials = JSON.parse(localStorage.getItem('materials'))
                materials.splice(this.index, 1)
-              this.materialEdit.photo = base64Image
+               if(this.file) {
+                  this.materialEdit.photo = this.file.name
+              }
               materials.push(this.materialEdit)
               localStorage.setItem('materials', JSON.stringify(materials))
-            }
-            if(this.file) {
-              reader.readAsDataURL(this.file)
               alert("Material editado com sucesso!")
-            }
-            else {
-              let materials = JSON.parse(localStorage.getItem('materials'))
-        materials.splice(this.index, 1)
-        materials.push(this.materialEdit)
-        localStorage.setItem('materials', JSON.stringify(materials))
-        alert("Material editado com sucesso!")
-            }
       }
     },
     handleFileChange(event) {

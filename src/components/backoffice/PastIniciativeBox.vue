@@ -1,53 +1,50 @@
 <template>
-  <div v-if="!consulted" class="card mb-3" style="max-width: 150rem; max-height:50rem">
-    <div class="row g-0">
-      <div class="col-md-4 d-flex ">
-        <img v-if="proposedIniciative.photo === ''" src="@/assets/default-image.png"  height="155px" width="160px" id="img" alt="Foto da Iniciativa">
-        <img v-else :src="imageUrl"  height="150px" width="150px" alt="Foto da Iniciativa" >
-      </div>
+    <div v-if="!consulted" class="card mb-3" style="max-width: 150rem; max-height:50rem">
+      <div class="row g-0">
+        <div class="col-md-4 d-flex">
+          <img v-if="iniciative.photo === ''" src="@/assets/default-image.png"  height="155px" width="160px" id="img" alt="Foto da Iniciativa">
+          <img v-else :src="imageUrl"  height="155px" width="150px" alt="Foto da Iniciativa" >
+        </div>
         <div class="col-md-8 d-flex flex-column">
           <div class="card-body">
-            <h5 class="card-title" style="font-weight: bold;">{{ proposedIniciative.theme }}</h5>
-            <p class="card-text">Dia: {{ proposedIniciative.date }}</p>
-            <p class="card-text">Local: {{ proposedIniciative.local }}</p>
+            <h5 class="card-title" style="font-weight: bold;">{{ iniciative.theme }}</h5>
+            <p class="card-text">Dia: {{ iniciative.date }}</p>
+            <p class="card-text">Local: {{ iniciative.local }}</p>
             <BlueButton @click="buttonHandler" content="CONSULTAR" />
           </div>
         </div>
+      </div>
     </div>
-  </div>
-  <ProposedIniciativeBoxConsulted :proposedIniciative="proposedIniciative" :status="status" @createPlan="handleCreatePlan" @close="handleClose" v-else />
-</template>
-
-<script>
-import BlueButton from './BlueButton.vue'
-import ProposedIniciativeBoxConsulted from './ProposedIniciativeBoxConsulted.vue'
-import { getStorage, ref as storageRef, getDownloadURL  } from 'firebase/storage'
-
-export default {
-  props: ['proposedIniciative', 'status'],
-  components: { BlueButton, ProposedIniciativeBoxConsulted },
-  data() {
-      return {
-          consulted: false,
-          imageUrl: ''
-      }
-  },
-  methods: {
-      buttonHandler() {
-          this.consulted = true
-      },
-      handleClose() {
-          this.consulted = false
-      },
-      handleCreatePlan(iniciative) {
-        this.$emit('createIniciativePlan', iniciative)
-      }
-  },
-  created() {
+    <PastIniciativeBoxConsulted :iniciative="iniciative" @close="handleClose" v-else />
+  </template>
+  
+  <script>
+  import BlueButton from './BlueButton.vue'
+  import PastIniciativeBoxConsulted from './PastIniciativeBoxConsulted.vue'
+  import { getStorage, ref as storageRef, getDownloadURL  } from 'firebase/storage'
+  
+  export default {
+    props: ['iniciative'],
+    components: { BlueButton, PastIniciativeBoxConsulted },
+    data() {
+        return {
+            consulted: false,
+            imageUrl: ''
+        }
+    },
+    methods: {
+        buttonHandler() {
+            this.consulted = true
+        },
+        handleClose() {
+            this.consulted = false
+        }
+    },
+    created() {
     const storage = getStorage()
 
-          if (this.proposedIniciative.photo) {
-            const imageRef = storageRef(storage, 'images/' + this.proposedIniciative.photo)
+          if (this.iniciative.photo) {
+            const imageRef = storageRef(storage, 'images/' + this.iniciative.photo)
             getDownloadURL(imageRef)
             .then((url) => {
               console.log('URL da imagem obtida:', url);
@@ -70,10 +67,10 @@ export default {
             })
           }
   }
-}
-</script>
-
-<style scoped>
+  }
+  </script>
+  
+  <style scoped>
 
 .card.mb-3 { 
 height: auto;
@@ -125,5 +122,4 @@ background-image: linear-gradient(to bottom, #414A9A, #161934);
 margin-left: 96%;
 margin-bottom: 2%;
 }
-
 </style>

@@ -1,9 +1,20 @@
 <template>
-  <br>
+  <h4>CANDIDATURAS E SOBRE NÓS</h4>
+  <hr />
   <div class="container">
-    <CollaboratorFormBox />
-    <IniciativeFormBox />
-    <AboutComplex class="oal"/>
+    <div class="row row-cols-2">
+      <div class="col-6">
+        <div class="row-3">
+          <CollaboratorFormBox />
+        </div>
+        <div class="row-3">
+          <IniciativeFormBox />
+        </div>
+      </div>
+      <div class="col-6">
+        <AboutComplex class="oal"/>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -18,21 +29,43 @@ export default {
 </script>
 
 <style scoped>
+
+* {
+  box-sizing: border-box;
+}
+
 .container {
-  
   background: url("@/assets/people-class.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: relative;
   display: flex;
-  justify-content: flex-start; /* Alinha o conteúdo à esquerda */
-  align-items: center; /* Alinha verticalmente */
-  height: 70vh; /* Altura total da viewport */
-}
-.oal {
-  padding-right: 170px;
+  justify-content:space-between;
+  align-items: center;
+  height: 80vh; /* Altura total da viewport */
+  padding-bottom: 60vh;
+  overflow: hidden;
+  margin-top: 1.5%;
 }
 
-/* Estilo para o componente JoinWorker */
-/* Adicione estilos conforme necessário */
+.oal {
+  height: 90%;
+  padding-right: 90px;
+  padding-left: 50px;
+}
+
+h4 {
+  position: relative;
+  margin-top: 4.5%;
+  text-align: center;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+hr {
+  position: relative;
+  max-width: 65%;
+  margin: 0 auto;
+  margin-top: 1%;
+  
+}
 </style>

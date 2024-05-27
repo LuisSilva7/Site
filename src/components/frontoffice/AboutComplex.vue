@@ -22,33 +22,40 @@ export default {
 
 <style scoped>
 
-
+*{
+  padding: 5px 5px 5px auto;
+  
+}
 
 .rectangle {
- 
-  width: 130%; /* Largura do retângulo */
+  margin-top: 2.5%;
+  width: 110%; 
   position: relative;
-  padding: 10px;
+  padding: 45px;
   background-color: rgba(201, 164, 164, 0.1); /* Cor de fundo com transparência */
   border: 2px solid #333; /* Borda sólida de 2px */
-  border-radius: 10px; /* Borda arredondada */
-  text-align: left; /* Alinhamento do texto ao centro */
-  
+  border-radius: 10px; 
+  text-align:justify; 
+  background-color: white;
 }
 
 h5 {
-  margin-bottom: 5%; /* Espaçamento inferior entre o título e o texto */
-  color: #F5A425
+  margin-bottom: 5%; 
+  color: #F5A425;
+  text-align: center;
 }
 
 h6 {
-  font-style: italic; /* Texto em itálico */
-  margin-bottom: 1%;
-  
+  font-style: italic;
+  margin-bottom: 2%;
+  color:black;
+  text-align: center;
 }
 
 p {
   font-size: 12.5px;
-  font-style: italic; /* Texto em itálico */
+  font-style: italic; 
+  color:black;
 }
+
 </style>

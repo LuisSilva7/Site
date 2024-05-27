@@ -63,16 +63,15 @@
 <script>
 import Button from '../frontoffice/Button.vue'
 import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { getStorage, ref as storageRef, uploadBytes  } from 'firebase/storage'
 
 export default {
   components: { Button },
   data() {
     return {
-      //fazer login e registar email e ver foto
       proposedIniciative: {photo: '', name: '', birthDate: '', telNumber: '', theme: '', local: '', targetAudience: '', minParticipants: 0,
                           maxParticipants: 0, objective: '', date: '', status: 'pendente', email: ''},
-      file: null,
-      imageData: ''
+      file: null
     }
   },
   methods: {
@@ -81,33 +80,26 @@ export default {
         const auth = getAuth()
         onAuthStateChanged(auth, (user) => {
           if (user) {
-
-            const reader = new FileReader()
-
-            reader.onload = (event) => {
-
-              const base64Image = event.target.result;
-
-              this.proposedIniciative.email = user.email
+            if(this.file) {
+              const storage = getStorage()
+              const imageRef = storageRef(storage, 'images/' + this.file.name)
+              uploadBytes(imageRef, this.file).then((snapshot) => {
+                console.log('Imagem enviada com sucesso para o Firebase!')
+                location.reload()
+              }).catch((error) => {
+                console.error('Erro ao enviar imagem:', error)
+              })
+            }
 
               let proposedIniciatives = JSON.parse(localStorage.getItem('proposedIniciatives'))
-              this.proposedIniciative.photo = base64Image
+              this.proposedIniciative.email = user.email
+              if(this.file) {
+                this.proposedIniciative.photo = this.file.name
+              }
               proposedIniciatives.push(this.proposedIniciative)
               localStorage.setItem('proposedIniciatives', JSON.stringify(proposedIniciatives))
-            }
-            if(this.file) {
-              reader.readAsDataURL(this.file)
-              location.reload()
               alert("Proposta de iniciativa enviada com sucesso!")
-            }
-            else {
-              this.proposedIniciative.email = user.email
-            let proposedIniciatives = JSON.parse(localStorage.getItem('proposedIniciatives'))
-            proposedIniciatives.push(this.proposedIniciative)
-            localStorage.setItem('proposedIniciatives', JSON.stringify(proposedIniciatives))
-            location.reload()
-              alert("Proposta de iniciativa enviada com sucesso!")
-            }
+              this.$router.push('/')
           }
         })
       }
@@ -147,7 +139,7 @@ h4 {
   transform: translate(-50%, -50%);
   width:400px;
   min-width: 400px;
-  height:auto;
+  height:700px;
   max-height: 35rem;
   border-radius: 20px;
   border: 2px solid #adadad;

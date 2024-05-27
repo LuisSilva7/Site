@@ -7,7 +7,7 @@
       <!-- Adicione mais sources se necessário para suportar diferentes formatos de vídeo -->
     </video>
     <div class="content">
-      <h2>BEM-VINDOS À GO HELP</h2>
+      <h2>BEM-VINDO À GO HELP</h2>
       <p>Somos uma organização sem fins lucrativos dedicada a promover a saúde e o bem-estar através de iniciativas no ramo do desporto.
       </p>
       <Button @click="scrollToComponent" content="JUNTA-TE AGORA!" />

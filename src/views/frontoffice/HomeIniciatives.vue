@@ -4,14 +4,8 @@
       <h4>INICIATIVAS REALIZADAS</h4>
       <hr />
       <div class="scroll-container">
-        <div class="iniciative-container">
-          <PastIniciative/>
-          <PastIniciative/>
-          <PastIniciative/>
-          <PastIniciative/>
-          <PastIniciative/>
-          <PastIniciative/>
-          <PastIniciative/>
+        <div v-for="(pastIniciative, index) in pastIniciatives" :key="index" class="iniciative-container">
+          <PastIniciative :theme="pastIniciative.theme"/>
         </div>
       </div>
     </div>
@@ -19,17 +13,16 @@
     <hr />
     <div class="curr-fut-container">
       <div class="curr-fut-column">
-        <CurrFutIniciative/>
-        <CurrFutIniciative/>
+        <CurrFutIniciative :theme="iniciative1.theme"/>
+        <CurrFutIniciative :theme="iniciative3.theme"/>
       </div>
       <div class="curr-fut-column">
-        <CurrFutIniciative/>
-        <CurrFutIniciative/>
+        <CurrFutIniciative :theme="iniciative2.theme"/>
+        <CurrFutIniciative :theme="iniciative4.theme"/>
       </div>
     </div>
-    <hr class="small-hr" id="scrollHere" />
     <div class="button-container">
-      <Button @click="redirect" content="VER TODAS AS INICIATIVAS"/>
+      <Button @click="redirect" content="VER TODAS AS INICIATIVAS" id="scrollHere"/>
     </div>
   </div>
 </template>
@@ -43,94 +36,97 @@ export default {
   components: { PastIniciative, CurrFutIniciative, Button },
   data() {
     return {
-      iniciatives: [] // Adicione suas iniciativas aqui
+      pastIniciatives: [],
+      iniciative1: {},
+      iniciative2: {},
+      iniciative3: {},
+      iniciative4: {}
     }
   },
   methods: {
     redirect() {
       this.$router.push("/iniciatives")
     }
+  },
+  created() {
+    this.pastIniciatives = JSON.parse(localStorage.getItem('iniciatives')).filter(iniciative => iniciative.status === 'passada')
+    var iniciatives = JSON.parse(localStorage.getItem('iniciatives')).filter(iniciative => iniciative.status === 'aceite')
+    iniciatives.sort((a, b) => new Date(a.date) - new Date(b.date))
+    this.iniciative1 = iniciatives[0]
+    this.iniciative2 = iniciatives[1]
+    this.iniciative3 = iniciatives[2]
+    this.iniciative4 = iniciatives[3]
   }
 }
 </script>
 
 <style scoped>
 .container {
-  margin-top: 2%;
+  
+  margin-top: 3%;
   max-width: 100%;
-  overflow-x: auto; /* Adiciona rolagem horizontal */
+  overflow-x: auto;
 }
 
 .scroll-container {
   margin-top: 2%;
-  overflow-x: scroll; /* Adiciona rolagem horizontal ao container */
-  white-space: nowrap; /* Impede a quebra de linha dos elementos */
+  display: flex;
+  justify-content: center; /* Centraliza os itens */
+  overflow-x: auto;
+  white-space: nowrap; 
+  
 }
 
 .scroll-container::-webkit-scrollbar {
-  width: 12px; /* Largura da barra de rolagem */
+  width: 12px;
 }
 
 .scroll-container::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Cor de fundo da barra de rolagem */
+  background: #f1f1f1;
 }
 
 .scroll-container::-webkit-scrollbar-thumb {
-  background: #888; /* Cor do polegar da barra de rolagem */
-  border-radius: 6px; /* Borda arredondada do polegar da barra de rolagem */
+  background: #888;
+  border-radius: 6px;
 }
 
 .iniciative-container {
   display: inline-flex;
 }
 
-/* Adiciona um espaço entre os componentes usando :after */
-.iniciative-container > :not(:last-child)::after {
-  content: '';
-  width: 10px; /* Define a largura do espaço entre os componentes */
-  display: inline-block;
-}
-
 h4 {
   position: relative;
   margin-top: 1.5%;
   text-align: center;
-  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 hr {
   position: relative;
-  max-width: 70%;
+  max-width: 65%;
   margin: 0 auto;
   margin-top: 1%;
-  border-top: 2px solid;
 }
 
-/* Estilo para os containers das iniciativas a decorrer e futuras */
 .curr-fut-container {
   display: flex;
-  justify-content: center; /* Alinha os containers no centro horizontalmente */
-  margin-top: 20px; /* Espaço entre as seções */
+  justify-content: center;
+  margin-top: 20px;
+  gap: 50px;
 }
 
-/* Estilo para as colunas */
 .curr-fut-column {
   display: flex;
-  flex-direction: column; /* Coluna para empilhar os itens verticalmente */
+  flex-direction: column;
 }
 
-/* Estilo para os componentes CurrFutIniciative */
 .curr-fut-column > :not(:last-child) {
-  margin-bottom: 20px; /* Espaço entre os componentes */
-}
-
-.small-hr {
-  width: 30%; /* Largura reduzida */
+  margin-bottom: 20px;
 }
 
 .button-container {
   display: flex;
-  justify-content: center; /* Alinha o botão no centro horizontalmente */
-  margin-top: 20px; /* Espaço entre o botão e as seções anteriores */
+  justify-content: center;
+  margin-top: 35px;
 }
 </style>

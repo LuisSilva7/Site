@@ -1,16 +1,33 @@
 <template>
   <header class="header">
-    <div class="left-content">
-      <img src="@/assets/logo-main-image.png" alt="logo">
-      <h2>GoHelp</h2>
+    <div @click="goHome" class="logo">
+      <div class="row row-cols-2">
+        <div class="col-4">
+          <img src="@/assets/logo-main-image.png" alt="logo">
+        </div>
+        <div class="col-2" id="logo-text">
+          <h2>GoHelp</h2>
+        </div>
+      </div>
     </div>
-    <div class="right-content">
-      <router-link to="/"><h3>Home</h3></router-link>
-      <router-link to="/iniciatives"><h3>Iniciativas</h3></router-link>
-      <router-link v-if="isCollaborator" to="/dashboard"><h3>Backoffice</h3></router-link>
-      <h3 @click="signInWithGoogle" v-if="!isLoggedIn">Login</h3>
-      <!--<img v-if="imageData" :src="imageData" alt="Imagem" height="100px" width="100px">-->
-      <h3 @click="handleSignOut" v-if="isLoggedIn">Logout</h3>
+    <div class="navbar">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <router-link to="/"><a>Home</a></router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/iniciatives"><a>Iniciativas</a></router-link>
+        </li>
+        <li class="nav-item">
+          <router-link v-if="isCollaborator" to="/dashboard"><a>Backoffice</a></router-link>
+        </li>
+        <li class="nav-item">
+          <a @click="signInWithGoogle" v-if="!isLoggedIn">Login</a>
+        </li>
+        <li class="nav-item">
+          <a @click="handleSignOut" v-if="isLoggedIn">Logout</a>
+        </li>
+      </ul>
     </div>
   </header>
 </template>
@@ -25,6 +42,10 @@
     let isCollaborator = ref(false)
     let auth
     let imageData = ''
+
+    const goHome = () => {
+      router.push('/')
+    }
 
     const signInWithGoogle = () => {
         const provider = new GoogleAuthProvider()
@@ -70,66 +91,109 @@
 </script>
   
   <style scoped>
-  *{ 
   
+* { 
+  box-sizing: border-box;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  }
-  
-  h2{
-
-    font-style: italic;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 3.5em;
-  }
-  
- h3 {
-    color: #fff;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 1.5em;
-    cursor: pointer;
-    display: inline-block;
-    margin-left: auto;
-    
-
+  height: 12%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  z-index: 100;
+  background-color: #5b5a5e8a;
 }
 
-h3:hover {
-    
-    color: #9d9c9c;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Adiciona uma sombra para destacar o texto */
-    
+/* Estilos da logo */
+.logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
-  
-  .header {
-    color: #fff;
-    display: flex;
-    
-  }
-  
-  .left-content {
-    display: flex;
-    align-items: center;
-  }
-  
-  .right-content {
-    
-    display: flex;
-    align-items: center;
-    width: 50%;
-    text-align: center;
-  
-    
-  }
-  
-  .left-content img {
-    width: 120px;
-    height: 120px;
-  }
-  
-  .right-content img { 
-    position: relative;
-    width: 120px;
-    height: 50px;
-  }
+.row.row-cols-2 {
+  display: flex;
+  align-items: center;
+  margin-bottom:2vh;
+}
+
+.row.row-cols-2 img {
+  width: 120px;
+  height: 120px;
+  padding-right:0;
+}
+
+#logo-text h2 {
+  font-style: italic;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 3.5em;
+  margin: 0;
+}
+
+
+.navbar {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  width: auto;
+}
+
+.nav {
+  display: flex;
+  list-style-type: none; 
+  padding: 0; 
+  margin: 0; 
+}
+
+.nav-pills {
+  display: flex; /* Use flexbox for nav items */
+  align-items: center; /* Align items vertically centered */
+}
+
+.nav-item {
+  margin-right: 20px; 
+}
+
+.nav-item a {
+  font-size: 21px;
+  color: #fff;
+  font-weight: 500;
+  text-decoration: none;
+  position: relative;
+  padding:8px;
+}
+
+.nav-item a:hover {
+  color: #9d9c9c;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.nav-item a::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #fff;
+  transition: .7s;
+}
+
+.nav-item a:hover::before {
+  width: 100%;
+}
+
+a {
+  color: #fff;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 1.5em;
+  cursor: pointer;
+}
   </style>

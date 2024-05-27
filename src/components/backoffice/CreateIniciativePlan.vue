@@ -4,127 +4,207 @@
       <BlueButton @click="closeHandler" content="-" />
     </div>
     <form>
-      <div class="form-group">
-        <label for="duration">Duração Esperada:</label>
-        <input type="text" id="duration" v-model="finalIniciative.expectedDuration">
-      </div>
-      <div class="form-group">
-        <div class="ola">
-          <label for="professionals">Colaboradores</label>
-          <BlueButton v-if="closeCollaborators === 'mais'" @click="handleCollaborators" content="+"/>
-          <BlueButton v-if="closeCollaborators === 'menos'" @click="handleCollaboratorsClose" content="-"/>
-        </div>
-        <ShowCollaborators v-if="showCollaborators" :collaborators="collaborators" @collaboratorsSaved="handlerCollaboratorsSaved"/>
-      </div>
-      <div class="form-group">
-        <div class="ola">
-          <label for="materials">Materiais</label>
-          <BlueButton v-if="closeMaterials === 'mais'" @click="handleMaterials" content="+"/>
-          <BlueButton v-if="closeMaterials === 'menos'" @click="handleMaterialsClose" content="-"/>
-        </div>
-        <ShowMaterials v-if="showMaterials" :materials="materials" @materialsSaved="handlerMaterialsSaved"/>
-      </div>
-      <div class="form-group">
-        <h5>Profissionais Associados</h5>
-        <div class="input-group">
-          <div>
-            <label for="professionalName">Nome:</label>
-            <input type="text" id="professionalName" v-model="professionalTmp.name">
+    <!--| Profissionais Associados |-->
+        <div class="form-group prof">
+          <div class="row-title">
+            <div class="title">
+              <h5>Profissionais Associados</h5>
+            </div>
           </div>
-          <div>
-            <label for="professionalRole">Cargo:</label>
-            <input type="text" id="professionalRole" v-model="professionalTmp.role">
+          <div class="row row-cols-2">
+            <div class="input-group">
+              <div class="column name">
+                <input type="text" id="professionalName" v-model="professionalTmp.name" required>
+                <label for="professionalName">Nome:</label>
+              </div>
+              <div class="column name">
+                <input type="text" id="professionalRole" v-model="professionalTmp.role" required>
+                <label for="professionalRole">Cargo:</label>
+              </div>
+            </div>
           </div>
-          <BlueButton @click.prevent="saveProfessional" content="Confirmar profissionais" />
-        </div>
-        <div v-for="(professional, index) in finalIniciative.professionals" :key="index">
-          <h6>Nome: {{ professional.name }} - Cargo: {{ professional.role }}</h6>
-        </div>
+          <!--Divisoria para dar add aos profissionais associados-->
+          <div class="conf-button">
+            <BlueButton @click.prevent="saveProfessional" content="Confirmar profissionais" />
+          </div>
+          <div v-for="(professional, index) in finalIniciative.professionals" :key="index" class="add-prof">
+            <h6>Nome: {{ professional.name }} - Cargo: {{ professional.role }}</h6>
+          </div>
       </div>
-      <div class="form-group">
-        <h5>Empresas Associadas</h5>
-        <div class="input-group">
-          <div>
-            <label for="companyName">Nome:</label>
-            <input type="text" id="companyName" v-model="companyTmp.name">
+      <!--| Empresas Associadas |-->
+      <div class="form-group emp">
+        <div class="row-title">
+          <div class="title">
+            <h5>Empresas Associadas</h5>
           </div>
-          <div>
-            <label for="companyField">Âmbito:</label>
-            <input type="text" id="companyField" v-model="companyTmp.role">
+        </div>
+        <div class="row row-cols-2">
+          <div class="input-group">
+            <div class="column name">
+              <input type="text" id="companyName" v-model="companyTmp.name" required>
+              <label for="companyName">Nome:</label>
+            </div>
+            <div class="column name">
+              <input type="text" id="companyField" v-model="companyTmp.role" required>
+              <label for="companyField">Âmbito:</label>
+            </div>
           </div>
+        </div>
+        <!--Divisoria para dar add as empresas associadas-->
+        <div class="conf-button">
           <BlueButton @click.prevent="saveCompany" content="Confirmar empresas" />
         </div>
-        <div v-for="(company, index) in finalIniciative.companies" :key="index">
+        <div v-for="(company, index) in finalIniciative.companies" :key="index" class="add-emp">
           <h6>Nome: {{ company.name }} - Âmbito: {{ company.role }}</h6>
         </div>
       </div>
-      <div class="form-group">
-        <label for="eventFlow">Fluxo de Eventos:</label>
-        <textarea id="eventFlow" v-model="finalIniciative.eventFlow"></textarea>
+      <!--| Duracao Esperada |-->
+      <div class="form-group duration" style="text-align:center;">
+        <label for="duration">
+          <div class="title">
+            <h5>Duração Esperada</h5>
+          </div>
+        </label>
+        <input type="text" id="duration" v-model="finalIniciative.expectedDuration">
       </div>
-      <div v-if="finalIniciative.expectedSuccessRate === 0">
-        <label for="companyField">Nível Sucesso Esperado:</label>
-        <div class="esferas-container">
-          <div @click="esferasHandler(20)" class="esferaBranca"></div>
-          <div @click="esferasHandler(40)" class="esferaBranca"></div>
-          <div @click="esferasHandler(60)" class="esferaBranca"></div>
-          <div @click="esferasHandler(80)" class="esferaBranca"></div>
-          <div @click="esferasHandler(100)" class="esferaBranca"></div>
+      <!--Fluxo de Eventos-->
+      <div class="form-group fluxo">
+        <label for="eventFlow">
+          <div class="title">
+            <h5>Fluxo de Eventos</h5>
+          </div>
+        </label>
+        <textarea id="eventFlow" v-model="finalIniciative.eventFlow" placeholder="Insira aqui o fluxo de eventos..."></textarea>
+      </div>
+      <!--Materiais e Colaboradores-->
+      <div class="form-group mc">
+        <div class="row row-cols-2 titles">
+          <div class="column">
+              <div class="line-with-text" style="text-align:center; width:100%;">
+                <label for="professionals" style="height:fit-content;">
+                  <p>Colaboradores</p>
+                </label>
+              </div>
+          </div>
+          <div class="column"> 
+              <div style="text-align:center; width:100%; margin-left: 17vh;" class="line-with-text">
+                <label for="materials" style="height:fit-content;">
+                  <p>Materiais</p>
+                </label>
+              </div>
+          </div>
+        </div>
+          <div class="row row-cols-2 col-mat">
+            <div class="input-group">
+              <div class="column">
+                <div class="ola">
+                  <div class="conter" style="width:100%;">
+                    <div class="expandir" style="width:fit-content;">
+                      <BlueButton v-if="closeCollaborators === 'mais'" @click="handleCollaborators" content="+"/>
+                      <BlueButton v-if="closeCollaborators === 'menos'" @click="handleCollaboratorsClose" content="-"/>
+                    </div>
+                    <div class="show">
+                      <ShowCollaborators v-if="showCollaborators" :collaborators="collaborators" @collaboratorsSaved="handlerCollaboratorsSaved"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="ola">
+                  <div class="conter" style="width:100%; width:fit-content;">
+                  <BlueButton v-if="closeMaterials === 'mais'" @click="handleMaterials" content="+"/>
+                  <BlueButton v-if="closeMaterials === 'menos'" @click="handleMaterialsClose" content="-"/>
+                    <div class="show">
+                      <ShowMaterials v-if="showMaterials" :materials="materials" @materialsSaved="handlerMaterialsSaved"/>
+                    </div>
+                  </div>
+                </div>    
+              </div>
+            </div>
+          </div>
+      </div>
+      <!--Esferas de Avaliação-->
+      <div class="form-group final-div">
+        <div class="row">
+          <div v-if="finalIniciative.expectedSuccessRate === 0">
+            <div class="line-with-text">
+              <label for="companyField">Nível de Sucesso Esperado</label>
+            </div>
+            <div class="esferas-container">
+              <div @click="esferasHandler(20)" class="esferaBranca"></div>
+              <div @click="esferasHandler(40)" class="esferaBranca"></div>
+              <div @click="esferasHandler(60)" class="esferaBranca"></div>
+              <div @click="esferasHandler(80)" class="esferaBranca"></div>
+              <div @click="esferasHandler(100)" class="esferaBranca"></div>
+            </div>
+          </div>
+          <div v-else-if="finalIniciative.expectedSuccessRate === 20">
+            <div class="line-with-text">
+              <label for="companyField">Nível de Sucesso Esperado</label>
+            </div>
+            <div class="esferas-container">
+              <div @click="esferasHandler(20)" class="esferaVerde"></div>
+              <div @click="esferasHandler(40)" class="esferaBranca"></div>
+              <div @click="esferasHandler(60)" class="esferaBranca"></div>
+              <div @click="esferasHandler(80)" class="esferaBranca"></div>
+              <div @click="esferasHandler(100)" class="esferaBranca"></div>
+            </div>
+          </div>
+          <div v-else-if="finalIniciative.expectedSuccessRate === 40">
+            <div class="line-with-text">
+              <label for="companyField">Nível de Sucesso Esperado</label>
+            </div>
+            <div class="esferas-container">
+              <div @click="esferasHandler(20)" class="esferaVerde"></div>
+              <div @click="esferasHandler(40)" class="esferaVerde"></div>
+              <div @click="esferasHandler(60)" class="esferaBranca"></div>
+              <div @click="esferasHandler(80)" class="esferaBranca"></div>
+              <div @click="esferasHandler(100)" class="esferaBranca"></div>
+            </div>
+          </div>
+          <div v-else-if="finalIniciative.expectedSuccessRate === 60">
+            <div class="line-with-text">
+              <label for="companyField">Nível de Sucesso Esperado</label>
+            </div>
+            <div class="esferas-container">
+              <div @click="esferasHandler(20)" class="esferaVerde"></div>
+              <div @click="esferasHandler(40)" class="esferaVerde"></div>
+              <div @click="esferasHandler(60)" class="esferaVerde"></div>
+              <div @click="esferasHandler(80)" class="esferaBranca"></div>
+              <div @click="esferasHandler(100)" class="esferaBranca"></div>
+            </div>
+          </div>
+          <div v-else-if="finalIniciative.expectedSuccessRate === 80">
+            <div class="line-with-text">
+              <label for="companyField">Nível de Sucesso Esperado</label>
+            </div>
+            <div class="esferas-container">
+              <div @click="esferasHandler(20)" class="esferaVerde"></div>
+              <div @click="esferasHandler(40)" class="esferaVerde"></div>
+              <div @click="esferasHandler(60)" class="esferaVerde"></div>
+              <div @click="esferasHandler(80)" class="esferaVerde"></div>
+              <div @click="esferasHandler(100)" class="esferaBranca"></div>
+            </div>
+          </div>
+          <div v-else>
+            <div class="line-with-text">
+              <label for="companyField">Nível de Sucesso Esperado</label>
+            </div>
+            <div class="esferas-container">
+              <div @click="esferasHandler(20)" class="esferaVerde"></div>
+              <div @click="esferasHandler(40)" class="esferaVerde"></div>
+              <div @click="esferasHandler(60)" class="esferaVerde"></div>
+              <div @click="esferasHandler(80)" class="esferaVerde"></div>
+              <div @click="esferasHandler(100)" class="esferaVerde"></div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="div button" style="margin-left:46.5%;">
+            <BlueButton @click="submitForm" content="Guardar" />
         </div>
       </div>
-      <div v-else-if="finalIniciative.expectedSuccessRate === 20">
-        <label for="companyField">Nível Sucesso Esperado:</label>
-        <div class="esferas-container">
-          <div @click="esferasHandler(20)" class="esferaVerde"></div>
-          <div @click="esferasHandler(40)" class="esferaBranca"></div>
-          <div @click="esferasHandler(60)" class="esferaBranca"></div>
-          <div @click="esferasHandler(80)" class="esferaBranca"></div>
-          <div @click="esferasHandler(100)" class="esferaBranca"></div>
-        </div>
-      </div>
-      <div v-else-if="finalIniciative.expectedSuccessRate === 40">
-        <label for="companyField">Nível Sucesso Esperado:</label>
-        <div class="esferas-container">
-          <div @click="esferasHandler(20)" class="esferaVerde"></div>
-          <div @click="esferasHandler(40)" class="esferaVerde"></div>
-          <div @click="esferasHandler(60)" class="esferaBranca"></div>
-          <div @click="esferasHandler(80)" class="esferaBranca"></div>
-          <div @click="esferasHandler(100)" class="esferaBranca"></div>
-        </div>
-      </div>
-      <div v-else-if="finalIniciative.expectedSuccessRate === 60">
-        <label for="companyField">Nível Sucesso Esperado:</label>
-        <div class="esferas-container">
-          <div @click="esferasHandler(20)" class="esferaVerde"></div>
-          <div @click="esferasHandler(40)" class="esferaVerde"></div>
-          <div @click="esferasHandler(60)" class="esferaVerde"></div>
-          <div @click="esferasHandler(80)" class="esferaBranca"></div>
-          <div @click="esferasHandler(100)" class="esferaBranca"></div>
-        </div>
-      </div>
-      <div v-else-if="finalIniciative.expectedSuccessRate === 80">
-        <label for="companyField">Nível Sucesso Esperado:</label>
-        <div class="esferas-container">
-          <div @click="esferasHandler(20)" class="esferaVerde"></div>
-          <div @click="esferasHandler(40)" class="esferaVerde"></div>
-          <div @click="esferasHandler(60)" class="esferaVerde"></div>
-          <div @click="esferasHandler(80)" class="esferaVerde"></div>
-          <div @click="esferasHandler(100)" class="esferaBranca"></div>
-        </div>
-      </div>
-      <div v-else>
-        <label for="companyField">Nível Sucesso Esperado:</label>
-        <div class="esferas-container">
-          <div @click="esferasHandler(20)" class="esferaVerde"></div>
-          <div @click="esferasHandler(40)" class="esferaVerde"></div>
-          <div @click="esferasHandler(60)" class="esferaVerde"></div>
-          <div @click="esferasHandler(80)" class="esferaVerde"></div>
-          <div @click="esferasHandler(100)" class="esferaVerde"></div>
-        </div>
-      </div>
-      <br>
-      <BlueButton @click="submitForm" content="Guardar" />
-    </form>
+  </form>
   </div>
 </template>
 
@@ -142,14 +222,16 @@ export default {
         photo: '', name: '', birthDate: '', telNumber: '', theme: '', local: '', targetAudience: '',
         minParticipants: 0, maxParticipants: 0, objective: '', date: '', status: 'aceite', email: '', 
         expectedDuration: 0, professionals: [], collaborators: [], materials: [], companies: [], 
-        eventFlow: '', expectedSuccessRate: 0},
+        eventFlow: '', expectedSuccessRate: 0, donatives: 0, costs: 0, duration: 0, duringIniciativeAudios: [], 
+        duringIniciativePhotos: [], duringIniciativeTexts: [], duringIniciativeVideos: [], participants: 0,
+        reportProblem: false, problem: '', participantsAssociated: 0, feedback: []},
       collaborators: [],
       closeCollaborators: 'mais',
       showCollaborators: false,
       materials: [],
       closeMaterials: 'mais',
       showMaterials: false,
-      professionalTmp: {name: '', role: ''},
+      professionalTmp: {name: '', role: '', check: false},
       companyTmp: {name: '', role: ''},
     }
   },
@@ -275,15 +357,23 @@ export default {
 </script>
 
 <style scoped>
+
 .container {
   margin-top: 20px;
+  margin-bottom: 20vh;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
+  background-color: rgb(255, 255, 255, 0.1);
 }
 
-.form-group {
-  margin-bottom: 20px;
+.title{
+  margin-bottom: 3vh;
+}
+
+label{
+  margin-bottom:2px;
+  margin-left:2px;
 }
 
 .label-container {
@@ -294,6 +384,7 @@ export default {
 .input-group {
   display: flex;
   justify-content: space-between;
+  margin-bottom:3vh;
 }
 
 .input-group > div {
@@ -308,8 +399,250 @@ textarea {
   border-radius: 5px;
 }
 
+/**CSS para titulos c/ linha por baixo */
+h5{
+  text-align: center;
+  position:relative;
+  padding-bottom: 7px;
+}
+
+h5::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-image: linear-gradient(to left, #414A9A, #161934);
+  border:#161934;
+}
+
+/*DIV - Materiais e Colaboradores */
+
+.form-group.mc{
+  position: relative; 
+  padding-top:10px;
+  margin-top: 5vh;
+}
+
+.form-group.mc .column{
+  display: flex;
+}
+
+.form-group.mc p{
+  font-size: 20px;
+  margin-bottom: 0;
+}
+
+.row.row-cols-2.titles{
+  height: fit-content;
+}
+
+.row.row-cols-2.titles .column{
+  text-align: center;
+  margin-bottom: 2vh;
+  width:46.5%;
+}
+
+#mat-title{
+  height: fit-content;
+}
+
+.ola {
+  display:flex;
+  align-items: left;
+  padding:1.5vh 0 0 1.5vh;
+  border: 1px solid white;
+  border-radius: 15px;
+  width:100%;
+  margin-bottom:3vh;
+  min-height:100px;
+  max-height:170px;
+  overflow-y: scroll;  /* Enable vertical scrollbar */
+  overflow-x: hidden;
+}
+
+.ola label{
+  margin-right: 10px;
+}
+
+.ola.expandir{
+  display:flex;
+  align-items: left;
+}
+
+.form-group.mc .show{
+  padding:10px;
+  padding-left: 20px;
+}
+
+.ola::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Cor do trilho da barra de rolagem */
+    border-radius: 10px; /* Borda arredondada do trilho */
+}
+
+.ola::-webkit-scrollbar-thumb {
+    background: #888; /* Cor do polegar da barra de rolagem */
+    border-radius: 10px; /* Borda arredondada do polegar */
+    border: 2px solid #f1f1f1; /* Espaço ao redor do polegar */
+}
+
+.ola::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Cor do polegar quando em hover */
+}
+
+/**DIV - Profissionais associados */
+.form-group.prof{
+  position: relative;
+  margin-bottom: 20px;
+  margin-top:5vh;
+}
+
+.form-group.prof .conf-button{
+  margin-bottom:2vh;
+}
+
+.form-group.prof .add-prof{
+  margin-top:1vh;
+  margin-left:5vh;
+}
+
+/**DIV - Empresas Associadas */
+.form-group.emp{
+  position: relative;
+  margin-bottom: 20px;
+  margin-top:5vh;
+}
+
+.form-group.emp .conf-button{
+  margin-bottom:2vh;
+}
+
+.form-group.emp .add-emp{
+  margin-top:1vh;
+  margin-left:5vh;
+}
+
+
+
+/*Labels c/ animacao do texto */
+.column.name {
+    position: relative;
+    margin: 20px 0;
+}
+
+.column.name label {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: white;
+    padding: 0 5px;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.column.name input {
+    width: 100%;
+    height: 60px;
+    font-size: 16px;
+    color: white;
+    padding: 0 15px;
+    background: transparent;
+    border: 1.2px solid #0ef;
+    outline: none;
+    border: 1px solid white;
+    border-radius: 15px;
+}
+
+.column.name input:focus~label,
+.column.name input:valid~label {
+    top: 0;
+    font-size: 14px;
+    background: white;
+    color: black;
+    border-radius:4px;
+}
+
+/*DIV - duração esperada */
+#duration{
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+  margin-top: 2vh;
+}
+
+.form-group.duration label{
+  width: 100%;
+}
+
+/**DIV - Fluxo de Eventos */
+.form-group.fluxo{
+  text-align: center;
+  position: relative;
+  margin-bottom: 20px;
+  margin-top:7vh;
+}
+
+.fluxo textarea {
+    min-height: 100px; 
+    font-size: 14px;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #fff; /* Cor do placeholder */
+    opacity: 1; /* Certifique-se de que a opacidade seja 1 para que a cor seja visível */
+}
+
+#eventFlow{
+  margin-top: 2vh;
+  border: 1px solid white;
+  background-color: transparent;
+  color: white;
+}
+
+.form-group.fluxo label{
+  width: 100%;
+}
+
+.form-group.final-div{
+  margin-top:11vh;
+  text-align: center;
+  position: relative;
+}
+
+/* div-final Texto sobre as esferas */
+.line-with-text {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px auto; /* Center the container horizontally */
+    width: 80%; /* Adjust the width as needed */
+    max-width: 600px; /* Optional: maximum width */
+    position: relative;
+}
+
+.line-with-text::before,
+.line-with-text::after {
+    content: "";
+    flex: 1;
+    border-top: 1px solid white;
+    margin: 0 10px;
+}
+
+.line-with-text label {
+    font-family: Arial, sans-serif;
+    background: transparent; /* Same as the background color of the body */
+    padding: 0 10px;
+    font-size: 16px;
+    white-space: nowrap; /* Prevents line break within the label */
+}
+
 .esferas-container {
   display: flex;
+  justify-content: center;
 }
 
 .esferaBranca {
@@ -331,8 +664,24 @@ textarea {
   margin-right: 10px;
   cursor: pointer;
 }
-
-.ola {
-  display: flex;
+ 
+.button-body.mt-auto{
+  text-align: right;
+  width:fit-content;
+  margin-right: 1vh;
 }
+
+.conf-button{
+  margin-top: 3vh;
+  margin-bottom: 5vh;
+  width:fit-content;
+}
+
+.div.button{
+  text-align: center;
+  align-items: end;
+  margin-top: 0;
+  width:fit-content;
+}
+
 </style>

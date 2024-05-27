@@ -1,16 +1,27 @@
 <template>
-    <p>Colaboradores Disponíveis:</p>
-    <div v-for="(collaborator, index) in collaborators" :key="index" class="ola">
-        <p>Colaborador {{ index + 1 }} - {{ collaborator.name }}</p>
-        <BlueButton @click="handleCollaborator(index)" content="add"/>
+    <div class="row row-cols-2">
+        <div class="column">
+            <div class="space">
+                <p>Colaboradores Disponíveis:</p>
+                <div v-for="(collaborator, index) in collaborators" :key="index" class="ola">
+                    <p>Colaborador {{ index + 1 }} - {{ collaborator.name }}</p>
+                    <BlueButton @click="handleCollaborator(index)" content="+"/>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="space">
+                <p>Colaboradores Selecionados:</p>
+                    <div v-for="(finalCollaborator, index) in finalCollaborators" :key="index" class="ola">
+                        <p>Colaborador {{ index + 1 }} - {{ finalCollaborator.name }}</p>
+                        <BlueButton @click="handleFinalCollaborator(index)" content="-"/>
+                    </div>
+            </div>   
+        </div>
+        <div class="button">
+            <BlueButton @click="saveCollaborators" content="Confirmar colaboradores" />
+        </div>
     </div>
-    <br>
-    <p>Colaboradores Selecionados:</p>
-    <div v-for="(finalCollaborator, index) in finalCollaborators" :key="index" class="ola">
-        <p>Colaborador {{ index + 1 }} - {{ finalCollaborator.name }}</p>
-        <BlueButton @click="handleFinalCollaborator(index)" content="rem"/>
-    </div>
-    <BlueButton @click="saveCollaborators" content="Confirmar colaboradores" />
 </template>
 
 <script>
@@ -43,7 +54,24 @@ export default {
 </script>
 
 <style scoped>
+
+p{
+    font-size: 12px;
+}
+
 .ola {
     display: flex;
+    text-align: justify;
+    padding-left: 5vh;
 }
+
+.button{
+    margin-top: auto;
+    text-align: center;
+}
+
+.space{
+    width:100%;
+    text-align: center;
+ }
 </style>

@@ -12,10 +12,10 @@
   
   <style scoped>
   .red-button {
-    background-color: rgb(202, 4, 4);
+    background-color: rgb(163, 9, 9);
     color: white;
     padding: 5px 10px;
-    border: 2px solid darkred; /* Adiciona borda vermelha escura */
+    border: 2px solid rgb(145, 7, 7); /* Adiciona borda vermelha escura */
     border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
@@ -23,6 +23,6 @@
   }
   
   .red-button:hover {
-    background-color: #990000; /* Torna o tom vermelho mais escuro ao passar o mouse */
+    background-color: #700505; /* Torna o tom vermelho mais escuro ao passar o mouse */
   }
   </style>

@@ -36,16 +36,15 @@
 <script>
 import Button from '../../components/frontoffice/Button.vue'
 import TheHeader from '../../components/frontoffice/TheHeader.vue'
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { getStorage, ref as storageRef, uploadBytes  } from 'firebase/storage'
 
 export default {
   components: { TheHeader, Button },
   data() {
     return {
-      //fazer login e registar email e ver foto
-      proposedCollaborator: {photo: '', name: '', birthDate: '', telNumber: '', address: '', email: ''},
-      file: null,
-      ImageData: ''
+      proposedCollaborator: {photo: '', name: '', birthDate: '', telNumber: '', address: '', email: '', check: false},
+      file: null
     }
   },
   methods: {
@@ -54,33 +53,25 @@ export default {
           const auth = getAuth()
           onAuthStateChanged(auth, (user) => {
             if (user) {
-
-              const reader = new FileReader()
-
-              reader.onload = (event) => {
-
-                const base64Image = event.target.result;
-
-                this.proposedCollaborator.email = user.email
-
-                let proposedCollaborators = JSON.parse(localStorage.getItem('proposedCollaborators'))
-                this.proposedCollaborator.photo = base64Image
-                proposedCollaborators.push(this.proposedCollaborator)
-                localStorage.setItem('proposedCollaborators', JSON.stringify(proposedCollaborators))
-              }
               if(this.file) {
-                reader.readAsDataURL(this.file)
-                this.$router.push('/')
-                alert("Candidatura a colaborador enviada com sucesso!")
+                const storage = getStorage()
+                const imageRef = storageRef(storage, 'images/' + this.file.name)
+                uploadBytes(imageRef, this.file).then((snapshot) => {
+                  console.log('Imagem enviada com sucesso para o Firebase!')
+                }).catch((error) => {
+                  console.error('Erro ao enviar imagem:', error)
+                })
               }
-              else {
-                this.proposedCollaborator.email = user.email
+
                 let proposedCollaborators = JSON.parse(localStorage.getItem('proposedCollaborators'))
+                this.proposedCollaborator.email = user.email
+                if(this.file) {
+                  this.proposedCollaborator.photo = this.file.name
+                }
                 proposedCollaborators.push(this.proposedCollaborator)
                 localStorage.setItem('proposedCollaborators', JSON.stringify(proposedCollaborators))
                 this.$router.push('/')
                 alert("Candidatura a colaborador enviada com sucesso!")
-              }
             }
           })
         }

@@ -1,41 +1,94 @@
 <template>
-    <div class="quadrado">
-        <h2>Título Aqui</h2>
-        <p>Texto.</p>
-    </div>
+  <div @click="redirect" class="quadrado">
+      <div class="texto-container">
+          <h4>{{ pastIniciative.theme }}</h4>
+          <p>Público alvo: {{ pastIniciative.targetAudience }}</p>
+      </div>
+      <img v-if="pastIniciative.photo === ''" src="@/assets/default-image.png" height="150px" width="150px" id="img" alt="Foto da Iniciativa">
+      <img v-else :src="imageUrl" height="150px" width="150px" alt="Foto da Iniciativa" class="opacidade-imagem">
+  </div>
 </template>
 
 <script>
-export default {
+import { getStorage, ref as storageRef, getDownloadURL } from 'firebase/storage'
 
+export default {
+  props: ['theme'],
+  data() {
+      return {
+          pastIniciative: {},
+          imageUrl: ''
+      }
+  },
+  methods: {
+    redirect() {
+      this.$router.push({ name: 'IniciativePast', params: { theme: this.pastIniciative.theme } })
+    }
+  },
+  created() {
+      this.pastIniciative = JSON.parse(localStorage.getItem('iniciatives')).find(iniciative => iniciative.theme === this.theme)
+      const storage = getStorage()
+
+      if (this.pastIniciative.photo) {
+          const imageRef = storageRef(storage, 'images/' + this.pastIniciative.photo)
+          getDownloadURL(imageRef)
+          .then((url) => {
+              console.log('URL da imagem obtida:', url);
+              this.imageUrl = url // Retorna a URL da imagem
+          })
+          .catch((error) => {
+              console.error('Erro ao obter URL da imagem:', error)
+              throw error; // Lança o erro para ser tratado pelo chamador
+          })
+      } else {
+          const imageRef = storageRef(storage, 'images/' + 'defaultImage.png')
+          getDownloadURL(imageRef)
+          .then((url) => {
+              console.log('URL da imagem obtida:', url);
+              this.imageUrl = url // Retorna a URL da imagem
+          })
+          .catch((error) => {
+              console.error('Erro ao obter URL da imagem:', error)
+              throw error; // Lança o erro para ser tratado pelo chamador
+          })
+      }
+  }
 }
 </script>
 
-<style>
+
+<style scoped>
 .quadrado {
-    width: 300px; /* Largura do quadrado */
-    height: 300px; /* Altura do quadrado */
-    background-image: url("@/assets/gym-class-image.png"); /* URL da imagem de fundo */
-    background-size: cover; /* Ajusta o tamanho da imagem para cobrir todo o quadrado */
-    background-position: center; /* Centraliza a imagem de fundo */
-    text-align: center; /* Alinha o texto ao centro do quadrado */
-    padding: 20px; /* Espaçamento interno */
-    color: white; /* Cor do texto */
-    border: 2px solid #fff; /* Adiciona borda branca */
-    box-sizing: border-box; /* Faz com que a borda seja incluída no cálculo da largura e altura */
-    display: flex; /* Usa flexbox para alinhar itens verticalmente */
-    flex-direction: column; /* Coloca os itens um em cima do outro */
-    justify-content: center; /* Alinha os itens verticalmente ao centro */
-    align-items: center; /* Alinha os itens horizontalmente ao centro */
+  cursor: pointer;
+  position: relative;
+  width: 350px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-h2 {
-    font-size: 24px; /* Tamanho do título */
-    margin-bottom: 10px; /* Espaçamento inferior entre o título e o texto */
+.texto-container {
+  position: absolute;
+  top: 60%;
+  left: 0;
+  text-align: center;
+  color: solid rgb(255, 255, 255);
+  padding: 20px;
+  width: 100%;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add this line */
 }
 
-p {
-    font-size: 16px; /* Tamanho do texto */
-    margin: 0; /* Remove margens padrão */
+img {
+margin: 20px;
+width: 100%;
+height: 100%;
+object-fit: cover;
+object-position: center;
+border-radius: 15px; 
+}
+
+.opacidade-imagem {
+  opacity: 0.4;
 }
 </style>

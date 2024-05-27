@@ -1,156 +1,197 @@
 <template>
-  <div class="card mb-3" style="max-width: 50rem; max-height:50rem">
-    <div class="row g-0">
-      <div class="col-md-4 d-flex">
-        <img v-if="proposedIniciative.photo === ''" src="@/assets/default-image.png" height="80px" width="80px" alt="Foto da Iniciativa">
-        <img v-else :src="proposedIniciative.photo" height="80px" width="80px" alt="Foto da Iniciativa">
-      </div>
+  <div class="card mb-3" style="max-width: 150rem; max-height:30rem">
+    <div class="classe" style="max-width: 150rem; max-height:30rem">
+      <div class="row g-0">
+        <div class="col-md-3 d-flex">
+          <img v-if="proposedIniciative.photo === ''" src="@/assets/default-image.png" height="150px" width="150px" id="img" alt="Foto da Iniciativa">
+          <img v-else :src="imageUrl" height="150px" width="150px" alt="Foto da Iniciativa">
+        </div>
         <div class="col-md-8 d-flex flex-column">
           <div class="card-body">
-            <div class="button-body mt-auto">
-            <BlueButton @click="closeHandler" content="-" />
-            </div>
-            <h5 class="card-title">{{ proposedIniciative.theme }}</h5>
-            <p class="card-text">DIA: {{ proposedIniciative.date }}</p>
-            <p class="card-text">LOCAL: {{ proposedIniciative.local }}</p>
-            <p class="card-text">OBJETIVO: {{ proposedIniciative.objective }}</p>
-            <p class="card-text">DADOS PROPONENTE:</p>
-            <p class="card-text">NOME: {{ proposedIniciative.name }}</p>
-            <p class="card-text">EMAIL: {{ proposedIniciative.email }}</p>
-            <p class="card-text">DATA NASCIMENTO: {{ proposedIniciative.birthDate }}</p>
-            <p class="card-text">MÍNIMO PARTICIPANTES: {{ proposedIniciative.minParticipants }}</p>
-            <p class="card-text">MÁXIMO PARTICIPANTES: {{ proposedIniciative.maxParticipants }}</p>
-          </div>
-          <div v-if="!status">
-            <div>
-              <RedButton @click="rejectHandler" content="RECUSAR" />
-            </div>
-            <div class="button-body mt-auto">
-              <BlueButton @click="createIniciativePlan" content="CRIAR PLANO" />
+            <div class="texto">
+              <h5 class="card-title" style="font-weight: bold;">{{ proposedIniciative.theme }}</h5>
+              <p class="card-text">Dia: {{ proposedIniciative.date }}</p>
+              <p class="card-text">Local: {{ proposedIniciative.local }}</p>
+              <p class="card-text">Objetivo: {{ proposedIniciative.objective }}</p>
+              <p class="card-text">Dados Proponente:</p>
+              <p class="card-text">&nbsp;&nbsp;&nbsp;Nome: {{ proposedIniciative.name }}</p>
+              <p class="card-text">&nbsp;&nbsp;&nbsp;Email: {{ proposedIniciative.email }}</p>
+              <p class="card-text">&nbsp;&nbsp;&nbsp;Data Nascimento: {{ proposedIniciative.birthDate }}</p>
+              <p class="card-text">&nbsp;&nbsp;&nbsp;Telemóvel: {{ proposedIniciative.telNumber }}</p>
+              <p class="card-text">Público alvo: {{ proposedIniciative.targetAudience }}</p>
+              <p class="card-text">Mínimo Participantes: {{ proposedIniciative.minParticipants }}</p>
+              <p class="card-text">Máximo Participantes: {{ proposedIniciative.maxParticipants }}</p>
             </div>
           </div>
         </div>
+        <div v-if="!status" class="d-flex justify-content-center">
+          <RedButton @click="rejectHandler" content="RECUSAR" />
+          <div class="b2">
+            <BlueButton @click="createIniciativePlan" content="CRIAR PLANO" />
+          </div>
+        </div>
+      </div>
+      <div class="button-body mt-auto">
+        <BlueButton @click="closeHandler" content="-" />
+      </div>
     </div>
   </div>
 </template>
 
- <script>
+<script>
 import BlueButton from './BlueButton.vue'
 import RedButton from './RedButton.vue'
 import CreateIniciativePlan from './CreateIniciativePlan.vue'
+import { getStorage, ref as storageRef, getDownloadURL } from 'firebase/storage'
 
-  export default {
-    props: ['proposedIniciative', 'status'],
-    components: { BlueButton, RedButton, CreateIniciativePlan },
-    data() {
-        return {
-            createPlan: false
-        }
+export default {
+  props: ['proposedIniciative', 'status'],
+  components: { BlueButton, RedButton, CreateIniciativePlan },
+  data() {
+    return {
+      createPlan: false,
+      imageUrl: ''
+    }
+  },
+  methods: {
+    closeHandler() {
+      this.$emit('close', '')
     },
-    methods: {
-        closeHandler() {
-            this.$emit('close', '')
-        },
-        rejectHandler() {
-            if (localStorage.getItem('proposedIniciatives')) {
-                let proposedIniciatives = JSON.parse(localStorage.getItem('proposedIniciatives'))
-                                            .filter(proposedIniciative => proposedIniciative.theme !== this.proposedIniciative.theme)
-                this.proposedIniciative.status = 'rejeitada'
-                proposedIniciatives.push(this.proposedIniciative)
-                localStorage.setItem('proposedIniciatives', JSON.stringify(proposedIniciatives))
+    rejectHandler() {
+      if (localStorage.getItem('proposedIniciatives')) {
+        let proposedIniciatives = JSON.parse(localStorage.getItem('proposedIniciatives'))
+                                  .filter(proposedIniciative => proposedIniciative.theme !== this.proposedIniciative.theme)
+        this.proposedIniciative.status = 'rejeitada'
+        proposedIniciatives.push(this.proposedIniciative)
+        localStorage.setItem('proposedIniciatives', JSON.stringify(proposedIniciatives))
 
-                var templateParams = {
-                email: this.proposedIniciative.email,
-                name: this.proposedIniciative.name,
-                theme: this.proposedIniciative.theme,
-                local: this.proposedIniciative.local,
-                targetAudience: this.proposedIniciative.targetAudience,
-                objective: this.proposedIniciative.objective,
-                date: this.proposedIniciative.date,
-              }
-
-              emailjs.send('service_lzqa2yd', 'template_61dy7j5', templateParams).then(
-                (response) => {
-                  console.log('SUCCESS!', response.status, response.text);
-                  location.reload()
-                },
-                (error) => {
-                  console.log('FAILED...', error)
-                  location.reload()
-                }
-              )
-            }
-        },
-        createIniciativePlan() {
-            this.createPlan = true
-            let iniciative = this.proposedIniciative
-            this.$emit('createPlan', iniciative)
-        }
-    },
-    mounted() {
-      const script = document.createElement('script')
-      script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js'
-      script.async = true
-      document.body.appendChild(script);
-
-      script.onload = () => {
-        emailjs.init({
-          publicKey: 'acllVfUK9wSzqr0g1',
-        })
+        location.reload()
       }
+    },
+    createIniciativePlan() {
+      this.createPlan = true
+      let iniciative = this.proposedIniciative
+      this.$emit('createPlan', iniciative)
+    }
+  },
+  created() {
+    const storage = getStorage()
+
+    if (this.proposedIniciative.photo) {
+      const imageRef = storageRef(storage, 'images/' + this.proposedIniciative.photo)
+      getDownloadURL(imageRef)
+      .then((url) => {
+        console.log('URL da imagem obtida:', url);
+        this.imageUrl = url // Retorna a URL da imagem
+      })
+      .catch((error) => {
+        console.error('Erro ao obter URL da imagem:', error)
+        throw error; // Lança o erro para ser tratado pelo chamador
+      })
+    } else {
+      const imageRef = storageRef(storage, 'images/' + 'defaultImage.png')
+      getDownloadURL(imageRef)
+      .then((url) => {
+        console.log('URL da imagem obtida:', url);
+        this.imageUrl = url // Retorna a URL da imagem
+      })
+      .catch((error) => {
+        console.error('Erro ao obter URL da imagem:', error)
+        throw error; // Lança o erro para ser tratado pelo chamador
+      })
     }
   }
-  </script>
- 
- <style scoped>
+}
+</script>
 
- .card.mb-3 { 
- height: 10.2rem;
- display: flex;
- flex-direction: row;
- margin-left: 2.5rem;
- margin-top:10rem; 
- border-radius: 10px;
- overflow:visible;
- background-color: #1B2631;
- }
- 
- .col-mg-4 {
- height:100%;
- margin-right: 0%;
- width:45%;
- }
- 
- .col-mg-4 img{
- object-fit: cover;
- }
- 
- .col-md-8 {
- width: 55%;
- color: white;
- font-family: nunito;
- font-size:18px;
- height:fit-content;
- }
- 
- .card-body {
- padding: 10px;
- }
- 
- .card-title,
- .card-text {
- margin-bottom: 10px; /* Adjust the margin bottom for each element */
- }
- 
- .btn {
- color: white;
- font-size:13px;
- font-style: bold;
- border:#161934;
- border-radius: 50px;
- background-image: linear-gradient(to bottom, #414A9A, #161934);
- margin-left: 96%;
- margin-bottom: 2%;
- }
- 
- </style>
+<style scoped>
+.img-fluid {
+  height: 30%;
+  border-radius: 20px;
+}
+
+.classe {
+  height: auto;
+  min-height: 22rem;
+  display: flex;
+  border-radius: 10px;
+  background-color: #1B2631;
+  padding-bottom: 0px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #79758d #1B2631;
+}
+
+.card.mb-3 {
+  height: auto;
+  display: flex;
+  margin-left: 2.5rem;
+  margin-top: 2rem;
+  border-radius: 10px;
+  background-color: #1B2631;
+}
+
+.col-mg-4 {
+  height: 100%;
+  margin-right: 0%;
+  width: 45%;
+}
+
+.col-mg-4 img {
+  object-fit: cover;
+}
+
+.col-md-8 {
+  width: 57%;
+  color: white;
+  font-family: nunito;
+  font-size: 18px;
+  height: fit-content;
+}
+
+.card-body {
+  padding: 10px;
+}
+
+.card-title,
+.card-text {
+  margin-bottom: 10px; /* Adjust the margin bottom for each element */
+}
+
+.btn {
+  color: white;
+  font-size: 13px;
+  font-style: bold;
+  border: #161934;
+  border-radius: 50px;
+  background-image: linear-gradient(to bottom, #414A9A, #161934);
+  margin-left: 96%;
+  margin-bottom: 2%;
+}
+
+.button-body.mt-auto {
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  margin-bottom: 70%;
+  margin-right: 2%;
+  padding-top: 2%;
+}
+
+.texto {
+  margin-left: 15%;
+  min-width: 19rem;
+  max-height: 25rem; 
+  padding: 10px; 
+  }
+
+.d-flex.justify-content-center {
+  margin-top: 15%;
+  margin-left: 30%;
+  min-width: 15rem;
+}
+
+.b2 {
+  margin-left: 2%;
+}
+</style>
