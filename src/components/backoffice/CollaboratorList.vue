@@ -134,7 +134,7 @@ h2 {
 
 th, td {
   padding: 12px 15px;
-  text-align: left;
+  text-align: center;
 }
 
 thead {

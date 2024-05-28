@@ -360,10 +360,10 @@ export default {
 
 .container {
   background-image: url('@/assets/background-header-image.jpeg');
-  margin-top: 50px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
+  overflow: hidden;
 }
 
 .title{

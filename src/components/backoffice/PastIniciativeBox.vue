@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!consulted" class="card mb-3" style="max-width: 150rem; max-height:50rem">
+    <div v-if="!consulted" class="card mb-3" style="max-width: 150rem; max-height:155px; overflow: hidden;">
       <div class="row g-0">
         <div class="col-md-4 d-flex">
           <img v-if="iniciative.photo === ''" src="@/assets/default-image.png"  height="155px" width="160px" id="img" alt="Foto da Iniciativa">

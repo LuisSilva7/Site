@@ -66,7 +66,7 @@ export default {
 html, body {
   height: 100%;
   margin: 0;
-  overflow: auto;
+  height: fit-content;
 }
 
 .page-container {
@@ -131,7 +131,7 @@ html, body {
 
 .pos {
   position: fixed;
-  top: 10%;
+  top: 15%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;

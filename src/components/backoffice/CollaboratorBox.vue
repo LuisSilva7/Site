@@ -1,7 +1,7 @@
 <template>
-  <div class="card mb-3" style="width:90% ;">
-    <div class="row g-0" id="container">
-      <div class="col-md-4 d-flex">
+  <div class="card mb-3" style="width:90%; overflow: hidden;">
+    <div class="row g-0" id="container" >
+      <div class="col-md-4 d-flex" style="overflow: hidden;">
         <img v-if="proposedCollaborator.photo === ''" src="@/assets/default-image.png" height="190px" width="130px" id="img" alt="Foto do Colaborador">
         <img v-else :src="imageUrl" height="190px" width="130px" alt="Foto do Colaborador">
       </div>
@@ -14,7 +14,7 @@
             <h6 class="card-text">Morada: {{ proposedCollaborator.address }}</h6>
           </div>
             <div class="card-buttons d-flex">
-              <RedButton @click="rejectHandler" content="REJEITAR" style="margin-right: 10%; margin-left: 70%;"/>
+              <RedButton @click="rejectHandler" content="REJEITAR" style="margin-right: 5%; margin-left: 70%;"/>
               <BlueButton @click="acceptHandler" content="ACEITAR" />
             </div>
         </div>
